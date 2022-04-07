@@ -1,0 +1,19 @@
+@each $dts in dtCustomers, dtUsers, dtTags, dtImboxBasic,dtUserHistory, dtDocuments, dtTracks
+{
+    #{'#'+$dts}_filter {
+        float: left !important;
+    }
+    #{'#'+$dts}_filter input {
+        width: 400px;
+        outline: 0px solid #aaa;
+    }
+
+    #{'#'+$dts}_length {
+        float: right !important;
+    }
+    #{'#'+$dts}_length label {
+        display:flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

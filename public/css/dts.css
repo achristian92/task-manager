@@ -1,0 +1,133 @@
+#dtCustomers_filter {
+  float: left !important;
+}
+
+#dtCustomers_filter input {
+  width: 400px;
+  outline: 0px solid #aaa;
+}
+
+#dtCustomers_length {
+  float: right !important;
+}
+
+#dtCustomers_length label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#dtUsers_filter {
+  float: left !important;
+}
+
+#dtUsers_filter input {
+  width: 400px;
+  outline: 0px solid #aaa;
+}
+
+#dtUsers_length {
+  float: right !important;
+}
+
+#dtUsers_length label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#dtTags_filter {
+  float: left !important;
+}
+
+#dtTags_filter input {
+  width: 400px;
+  outline: 0px solid #aaa;
+}
+
+#dtTags_length {
+  float: right !important;
+}
+
+#dtTags_length label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#dtImboxBasic_filter {
+  float: left !important;
+}
+
+#dtImboxBasic_filter input {
+  width: 400px;
+  outline: 0px solid #aaa;
+}
+
+#dtImboxBasic_length {
+  float: right !important;
+}
+
+#dtImboxBasic_length label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#dtUserHistory_filter {
+  float: left !important;
+}
+
+#dtUserHistory_filter input {
+  width: 400px;
+  outline: 0px solid #aaa;
+}
+
+#dtUserHistory_length {
+  float: right !important;
+}
+
+#dtUserHistory_length label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#dtDocuments_filter {
+  float: left !important;
+}
+
+#dtDocuments_filter input {
+  width: 400px;
+  outline: 0px solid #aaa;
+}
+
+#dtDocuments_length {
+  float: right !important;
+}
+
+#dtDocuments_length label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#dtTracks_filter {
+  float: left !important;
+}
+
+#dtTracks_filter input {
+  width: 400px;
+  outline: 0px solid #aaa;
+}
+
+#dtTracks_length {
+  float: right !important;
+}
+
+#dtTracks_length label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
