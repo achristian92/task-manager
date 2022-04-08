@@ -23,8 +23,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/home';
     public const DASHBOARD = '/admin/dashboard';
-    public const PLAN = '/admin/planned?view=calendar';
-    public const MIPLAN = '/collaborator/my-planned?view=calendar';
+    public const MIPLAN = '/user/my-workplans';
 
     /**
      * Define your route model bindings, pattern filters, etc.

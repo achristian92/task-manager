@@ -25,7 +25,7 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         if (Auth::check()) {
-            if (Auth::user()->hasAnyRole('admin','supervisor'))
+            if (Auth::user()->hasAnyRole('Admin','Supervisor'))
                 return redirect($this->redirectTo);
 
             return redirect($this->redirectToCollaborator);
@@ -56,7 +56,7 @@ class LoginController extends Controller
 
             history(UserHistory::SESSION,'Ingresó al sistema');
 
-            if (Auth::user()->hasAnyRole('admin','supervisor')) {
+            if (Auth::user()->hasAnyRole('Admin','Supervisor')) {
                 return redirect($this->redirectTo);
             }
 
