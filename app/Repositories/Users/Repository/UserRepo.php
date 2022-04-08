@@ -5,10 +5,10 @@ namespace App\Repositories\Users\Repository;
 
 use App\Mail\SendEmailNewUser;
 use App\Repositories\Customers\Customer;
-use App\Repositories\History\UserHistory;
+use App\Repositories\Histories\UserHistory;
 use App\Repositories\Supervisors\Supervisor;
 use App\Repositories\Users\User;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Prettus\Repository\Eloquent\BaseRepository;
 
@@ -42,7 +42,7 @@ class UserRepo extends BaseRepository implements IUser
             ->orderBy('name')
             ->get()
             ->filter(function (User $user){
-                return $user->hasAnyRole('admin','supervisor');
+                return $user->hasAnyRole('Admin','Supervisor');
             })
             ->transform(function (User $user) {
                 return [

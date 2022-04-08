@@ -6,7 +6,7 @@
             @include('components.btn-create',['url'=>  route('admin.users.create')])
         @endslot
         @slot('table')
-            <table class="table align-items-center table-flush border-bottom-0" id="dtUsers">
+            <table class="table align-items-center table-flush border-bottom-0" id="dtUserHistory">
                 <thead class="thead-light">
                 <tr>
                     <th>Usuario</th>

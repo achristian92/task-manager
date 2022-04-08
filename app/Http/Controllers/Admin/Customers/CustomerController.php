@@ -5,23 +5,31 @@ namespace App\Http\Controllers\Admin\Customers;
 
 
 use App\Http\Controllers\Controller;
+use App\Repositories\Activities\Repository\IActivity;
+use App\Repositories\Activities\Transformations\ActivityTransformable;
 use App\Repositories\Customers\Customer;
 use App\Repositories\Customers\Repository\ICustomer;
 use App\Repositories\Customers\Requests\CustomerRequest;
-
-use App\Repositories\History\UserHistory;
+use App\Repositories\Histories\UserHistory;
+use App\Repositories\Tags\Repository\ITag;
+use App\Repositories\Tools\DatesTrait;
 use App\Repositories\Tools\UploadableTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class CustomerController extends Controller
 {
-    use UploadableTrait;
+    use UploadableTrait, ActivityTransformable, DatesTrait;
 
-    private $customerRepo;
+    private ICustomer $customerRepo;
+    private IActivity $activityRepo;
+    private ITag $tagRepo;
 
-    public function __construct(ICustomer $ICustomer)
+    public function __construct(ICustomer $ICustomer, IActivity $IActivity, ITag $ITag)
     {
         $this->customerRepo = $ICustomer;
+        $this->activityRepo = $IActivity;
+        $this->tagRepo      = $ITag;
     }
 
     public function index()
@@ -55,9 +63,29 @@ class CustomerController extends Controller
         return view('admin.customers.edit',[ 'model' =>$customer ]);
     }
 
-    public function show(int $customer_id)
+    public function show(Customer $customer)
     {
-        return view('admin.customers.show',compact('customer_id'));
+        $date = $this->getDateFormats(request()->input('yearAndMonth'));
+
+        $activities = $this->activityRepo->listActivityByCustomer($customer->id,$date['from'],$date['to'])
+            ->transform(function ($activity) {
+                return $this->transformActivityAdvance($activity);
+            });
+
+        $qtyUsers = $activities->unique('userId')->count();
+        $arrayEstimatedTime = Arr::pluck($activities,'estimatedTime');
+        $arrayDuration = Arr::pluck($activities,'realTime');
+
+        return view('admin.customers.show', [
+            'customer'   => $customer,
+            'qtyUsers'   => $qtyUsers,
+            'timeWorked' => sumArraysTime($arrayEstimatedTime),
+            'timeReal'   => sumArraysTime($arrayDuration),
+            'progress'   => $this->activityRepo->progress($activities),
+            'resume'     => $this->activityRepo->resume($activities),
+            'tagHistory' => $this->tagRepo->historyHours($this->subMonths($date['from'])),
+            'activities' => $activities,
+        ]);
     }
 
     public function update(CustomerRequest $request, Customer $customer)

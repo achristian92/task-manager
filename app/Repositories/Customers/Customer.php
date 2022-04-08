@@ -2,12 +2,12 @@
 
 namespace App\Repositories\Customers;
 
-use App\Models\User;
 use App\Repositories\Activities\Activity;
-use Auth;
+use App\Repositories\Users\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Customer extends Model
 {

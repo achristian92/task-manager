@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Repositories\Users\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class TaskManagerServiceProvider extends ServiceProvider
@@ -22,5 +24,11 @@ class TaskManagerServiceProvider extends ServiceProvider
                 'notifications' => 0
             ]);
         });
+
+
+        view()->composer('admin.users.partials.row', function ($view) {
+            $view->with('userv2', Auth::user());
+        });
+
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Setting\Profiles;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Repositories\History\UserHistory;
+use App\Repositories\Histories\UserHistory;
 use App\Repositories\Tools\UploadableTrait;
 use App\Repositories\Users\Requests\UserRequest;
 

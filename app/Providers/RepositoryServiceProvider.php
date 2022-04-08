@@ -7,6 +7,11 @@ use App\Repositories\Activities\Repository\ActivityRepo;
 use App\Repositories\Activities\Repository\IActivity;
 use App\Repositories\Customers\Repository\CustomerRepo;
 use App\Repositories\Customers\Repository\ICustomer;
+use App\Repositories\Documents\Repository\IUserDocument;
+use App\Repositories\Documents\Repository\UserDocumentRepo;
+use App\Repositories\Histories\Repository\IUserHistory;
+use App\Repositories\Histories\Repository\UserHistoryRepo;
+use App\Repositories\Histories\UserHistory;
 use App\Repositories\Tags\Repository\ITag;
 use App\Repositories\Users\Repository\IUser;
 use App\Repositories\Users\Repository\UserRepo;
@@ -42,6 +47,16 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             IActivity::class,
             ActivityRepo::class
+        );
+
+        $this->app->bind(
+            IUserHistory::class,
+            UserHistoryRepo::class
+        );
+
+        $this->app->bind(
+            IUserDocument::class,
+            UserDocumentRepo::class
         );
 
 

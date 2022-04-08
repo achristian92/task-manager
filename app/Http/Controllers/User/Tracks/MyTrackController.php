@@ -4,7 +4,6 @@ namespace App\Http\Controllers\User\Tracks;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Activities\Repository\IActivity;
-use App\Repositories\Activities\Transformations\ActivityFilterTrait;
 use App\Repositories\Activities\Transformations\ActivityTrait;
 use App\Repositories\Activities\Transformations\ActivityTransformable;
 use App\Repositories\Tools\DatesTrait;

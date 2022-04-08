@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Repositories\Companies\Company;
 use App\Repositories\Companies\Requests\CompanyRequest;
-use App\Repositories\History\UserHistory;
+use App\Repositories\Histories\UserHistory;
 use App\Repositories\Tools\UploadableTrait;
 
 class CompanyController extends Controller

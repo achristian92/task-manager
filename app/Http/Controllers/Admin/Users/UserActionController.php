@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\History\UserHistory;
+use App\Repositories\Histories\UserHistory;
 use App\Repositories\Users\Repository\IUser;
 use App\Repositories\Users\User;
 

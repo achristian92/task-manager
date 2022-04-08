@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Front\Tags;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\History\UserHistory;
+use App\Repositories\Histories\UserHistory;
 use App\Repositories\Tags\Repository\ITag;
 use App\Repositories\Tags\Requests\TagRequest;
 use App\Repositories\Tags\Tag;

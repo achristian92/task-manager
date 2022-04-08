@@ -4,12 +4,10 @@
 namespace App\Repositories\Customers\Repository;
 
 use App\Repositories\Customers\Customer;
-use App\Repositories\History\UserHistory;
+use App\Repositories\Histories\UserHistory;
 use App\Repositories\Tools\DatesTrait;
 use App\Repositories\Tools\TActivityReport;
 use App\Repositories\Tools\UploadableTrait;
-use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
-use Illuminate\Support\Collection;
 use Prettus\Repository\Eloquent\BaseRepository;
 
 class CustomerRepo extends BaseRepository implements ICustomer

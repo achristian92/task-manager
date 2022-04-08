@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\History;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\History\UserDocument;
+use App\Repositories\Documents\UserDocument;
 
 class DocumentController extends Controller
 {

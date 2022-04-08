@@ -3,14 +3,7 @@
     @component('components.list')
         @slot('title','Seguimiento de Usuarios ['. count($tracks).']')
         @slot('actions')
-            <div class="form-group offset-md-8 col-md-4 align-content-center">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
-                    </div>
-                    <input class="form-control" type="text" id="datepickertrack">
-                </div>
-            </div>
+            @include('components.datepicker',['name' => 'datepickertrack'])
         @endslot
         @slot('filters')@endslot
         @slot('table')
@@ -32,7 +25,6 @@
             </table>
         @endslot
     @endcomponent
-{{--    <tracks></tracks>--}}
 @endsection
 
 @push('js')

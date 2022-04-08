@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use App\Repositories\History\UserHistory;
+use App\Repositories\Histories\UserHistory;
 use App\Repositories\Users\Requests\LoginRequest;
 use App\Repositories\Users\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;

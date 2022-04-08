@@ -2,6 +2,7 @@
 
 
 use App\Repositories\Activities\Activity;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
@@ -176,6 +177,17 @@ function history(string $type, string $description,$model = null) {
             'description'    => $description,
             'model'          => $model
         ]);
+}
+
+
+function bsw_date_short(Carbon $date = null, $format = 'd/m/Y',bool $showTime = false)
+{
+    if ($date === null) return '';
+
+    if ($showTime)
+        return Carbon::parse($date)->format($format.' h:i');
+    else
+        return Carbon::parse($date)->format($format);
 }
 
 function companyID(): int

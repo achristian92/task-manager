@@ -5,11 +5,10 @@ namespace App\Repositories\Users;
 use App\Repositories\Activities\Activity;
 use App\Repositories\Companies\Company;
 use App\Repositories\Customers\Customer;
-use App\Repositories\History\UserDocument;
-use App\Repositories\History\UserHistory;
+use App\Repositories\Documents\UserDocument;
+use App\Repositories\Histories\UserHistory;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
@@ -59,16 +58,16 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return $this->hasRole('admin');
+        return $this->hasRole('Admin');
     }
 
     public function isSupervisor(): bool
     {
-        return $this->hasRole('supervisor');
+        return $this->hasRole('Supervisor');
     }
     public function isCollaborator(): bool
     {
-        return $this->hasRole('user');
+        return $this->hasRole('Usuario');
     }
 
     public function history()

@@ -91,7 +91,7 @@ return [
     'from' => [
         'send_email' => env('SEND_EMAIL',true),
         'address' => env('MAIL_FROM_ADDRESS', "no-replay@brainbox.pe"),
-        'name' => env('MAIL_FROM_NAME', "JGA TEAM"),
+        'name' => env('MAIL_FROM_NAME', "Task Manager Team"),
         'activities_not_loaded' => env('ACT_NOT_LOADED',"Reporte actividades no cargadas!"),
         'activities_deadline' => env('ACT_DEADLINE',"Actividades con fecha límite!"),
         'new_activity_for_you' => env('ACT_ASSIG',"Nueva actividad asignada para ti!"),

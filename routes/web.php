@@ -3,12 +3,13 @@
 use App\Http\Controllers\Admin\Customers\CustomerController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\History\DocumentController;
-use App\Http\Controllers\Admin\History\UserController;
+use App\Http\Controllers\Admin\History\UserController as UserHistoryController;
 use App\Http\Controllers\Admin\Imbox\ImboxController;
 use App\Http\Controllers\Admin\Reports\ReportController;
 use App\Http\Controllers\Admin\Tags\TagController;
 use App\Http\Controllers\Admin\Tracks\TrackController;
 use App\Http\Controllers\Admin\Users\UserActionController;
+use App\Http\Controllers\Admin\Users\UserController;
 use App\Http\Controllers\Admin\WorkPlans\WorkPlanController;
 use App\Http\Controllers\Setting\Companies\CompanyController;
 use App\Http\Controllers\Setting\Profiles\ProfileController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\User\Imbox\MyImboxController;
 use App\Http\Controllers\User\Reports\MyReportController;
 use App\Http\Controllers\User\Tracks\MyTrackController;
 use App\Http\Controllers\User\WorkPlans\MyWorkPlanController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -38,6 +40,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.' ],
     Route::resource('customers', CustomerController::class);
 
     Route::resource('users', UserController::class);
+    Route::get('users/{user}/history', [UserController::class,'history'])->name('users.history');
+    Route::get('users/{user}/documents', [UserController::class,'document'])->name('users.document');
     Route::get('users/{user}/enable',[UserActionController::class,'enable'])->name('users.enable');
     Route::get('users/{user}/disable',[UserActionController::class,'disable'])->name('users.disable');
     Route::get('users/{user}/send-credentials',[UserActionController::class,'sendCredentials'])->name('users.credentials');
@@ -52,7 +56,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.' ],
 
     Route::get('reports', ReportController::class)->name('reports.index');
 
-    Route::get('histories', UserController::class)->name('histories.index');
+    Route::resource('histories', UserHistoryController::class)->only('index','show');
 
     Route::get('documents', DocumentController::class)->name('documents.index');
 

@@ -151,7 +151,7 @@
                             <br>
                             <div class="">
                                 <div align='center' >
-                                    <img src="{{ $company->src_logo }}" style="object-fit: contain;"   alt='Logo'  data-default="placeholder" />
+                                    <img src="{{ $company->src_logo }}" style="max-height: 80px; max-width:200px;object-fit: contain;"   alt='Logo'  data-default="placeholder" />
                                 </div>
                             </div>
                         </td>

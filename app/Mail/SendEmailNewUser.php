@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Repositories\Users\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -11,13 +12,12 @@ class SendEmailNewUser extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    private $data;
-    private $setup;
 
-    public function __construct(array $data,$setup)
+    private User $user;
+
+    public function __construct(User $user)
     {
-        $this->data = $data;
-        $this->setup = $setup;
+        $this->user = $user;
     }
 
     /**
@@ -27,12 +27,13 @@ class SendEmailNewUser extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->view('emails.users.notificationEmailNewUser')
+        $data = [
+            'user'    => $this->user,
+            'company' => $this->user->company
+        ];
+        return $this->view('emails.users.new-user')
             ->from(config('mail.from.address'), config('mail.from.name'))
-            ->subject("Bienvenido a ".strtolower($this->setup->project)." - ". $this->data['name'])
-            ->with([
-                'data' => $this->data,
-                'setting' => $this->setup
-            ]);
+            ->subject("Bienvenido a Task Manager ". $this->user->name)
+            ->with($data);
     }
 }

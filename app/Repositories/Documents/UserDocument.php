@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Repositories\History;
+namespace App\Repositories\Documents;
 
 use App\Repositories\Users\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use function companyID;
 
 class UserDocument extends Model
 {

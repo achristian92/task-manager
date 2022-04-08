@@ -3,8 +3,7 @@
 namespace App\Repositories\Tags\Repository;
 
 use App\Repositories\Activities\Activity;
-use App\Repositories\Companies\Company;
-use App\Repositories\History\UserHistory;
+use App\Repositories\Histories\UserHistory;
 use App\Repositories\Tags\Tag;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;

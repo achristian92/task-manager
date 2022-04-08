@@ -4,7 +4,7 @@ namespace App\Repositories\Activities\Repository;
 
 use App\Repositories\Activities\Activity;
 use App\Repositories\Activities\Transformations\ActivityTrait;
-use App\Repositories\History\UserHistory;
+use App\Repositories\Histories\UserHistory;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -189,10 +189,20 @@ class ActivityRepo extends BaseRepository implements IActivity
             ->get();
     }
 
-    public function listActivityByUser(int $user_id, $from, $to)
+    public function listActivityByUser(int $id, $from, $to)
     {
         return $this->model->with('user','sub_activities','customer','created_by', 'tag')
-            ->whereUserId($user_id)
+            ->whereUserId($id)
+            ->whereDate('start_date','>=',$from)
+            ->whereDate('due_date','<=',$to)
+            ->orderBy('start_date')
+            ->get();
+    }
+
+    public function listActivityByCustomer(int $id, $from, $to)
+    {
+        return $this->model->with('user','sub_activities','partials','customer','created_by', 'tag')
+            ->whereCustomerId($id)
             ->whereDate('start_date','>=',$from)
             ->whereDate('due_date','<=',$to)
             ->orderBy('start_date')

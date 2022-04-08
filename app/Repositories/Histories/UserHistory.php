@@ -1,12 +1,13 @@
 <?php
 
 
-namespace App\Repositories\History;
+namespace App\Repositories\Histories;
 
 
 use App\Repositories\Users\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use function companyID;
 
 class UserHistory extends Model
 {
@@ -25,7 +26,7 @@ class UserHistory extends Model
     CONST UPDATED = 'actualizar';
     CONST STORE = 'guardar';
     CONST DELETE = 'eliminar';
-    CONST DISABLE = 'disactivar';
+    CONST DISABLE = 'desactivar';
     CONST ENABLE = 'activar';
     CONST NOTIFY = 'notificar';
     CONST EXPORT = 'exportar';

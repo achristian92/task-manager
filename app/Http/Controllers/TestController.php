@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Repositories\Activities\Activity;
 use App\Repositories\Customers\Customer;
 use App\Repositories\Users\Repository\IUser;
+use App\Repositories\Users\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Collection;
@@ -22,50 +23,13 @@ class TestController extends Controller
 
     public function __invoke()
     {
-        $from = Carbon::createFromDate('2022-03')->startOfMonth();
-        $end = $from->endOfMonth()->format('Y-m-d');
-        $substart = $from->subMonths(6)->format('Y-m-d');
-        $period = CarbonPeriod::create($substart, '1 month', $end);
-        $rangeMonth = [];
-        $rangeMonthName = [];
-        foreach ($period as $month) {
-            $rangeMonth[] = $month->format("Y-m");
-            $rangeMonthName[] = ucfirst($month->monthName);
-        }
+        $user = User::find(6);
 
 
-        return [
-            'fromYmd'  => $substart,
-            'toYmd'    =>  $end,
-            'formatYm' => $rangeMonth,
-            'names'    => $rangeMonthName
-        ];
-
-
-        $company_id = 1;
-        $startDate = '2021-03-02';
-        $endDate = '2022-03-31';
-
-       $activities = Activity::with(['customer','user','tag'])
-           ->whereCompanyId($company_id)
-           ->whereDate('start_date','>=',$startDate)
-           ->whereDate('due_date','<=',$endDate)
-           ->get()->transform(function ($activity) {
-                return [
-                    'status'   => $activity->currentStatus(),
-                    'custId'   => $activity->customer_id,
-                    'custName' => $activity->customer->name,
-                    'usuId'   => $activity->user_id,
-                    'usuName' => $activity->user->full_name,
-                    'tagId'   => $activity->tag_id,
-                    'tagName' => $activity->tag->name,
-                    'timeReal' => $activity->time_real,
-                ];
-           });
-
-
-       $taghours = $this->tagHours($activities);
-
+       return view('emails.users.new-user',[
+           'user'    => $user,
+           'company' => $user->company
+       ]);
     }
 
 
