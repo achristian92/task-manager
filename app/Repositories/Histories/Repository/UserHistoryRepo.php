@@ -13,6 +13,14 @@ class UserHistoryRepo extends BaseRepository implements IUserHistory
         return UserHistory::class;
     }
 
+    public function listHistory(string $from, string $to)
+    {
+        return $this->model::whereCompanyId(companyID())
+            ->whereDate('created_at','>=',$from)
+            ->whereDate('created_at','<=',$to)
+            ->orderBy('created_at','desc')
+            ->get();
+    }
 
     public function listHistoryByUser($id, string $from, string $to)
     {
@@ -22,4 +30,6 @@ class UserHistoryRepo extends BaseRepository implements IUserHistory
             ->orderBy('created_at','desc')
             ->get();
     }
+
+
 }

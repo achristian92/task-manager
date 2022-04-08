@@ -21,6 +21,7 @@ interface ICustomer
 
     public function deleteCustomer(int $customer_id): bool ;
 
+    public function historyHours(array $months, array $ids, $sub = 6);
    // public function listActivities(int $id, string $from, string $to): Collection;
 
 //    public function reportHorasMonth(string $from, string $to, array $rangeDates);

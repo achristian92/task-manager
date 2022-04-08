@@ -13,10 +13,21 @@ class UserDocumentRepo extends BaseRepository implements IUserDocument
         return UserDocument::class;
     }
 
+    public function listDocuments(string $from, string $to)
+    {
+        return $this->model::whereCompanyId(companyID())
+            ->whereDate('created_at','>=',$from)
+            ->whereDate('created_at','<=',$to)
+            ->orderBy('created_at','desc')
+            ->get();
+    }
+
     public function listDocumentsByUser($id)
     {
         return $this->model::whereUserId($id)
             ->orderBy('created_at','desc')
             ->get();
     }
+
+
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\Customers\CustomerController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\History\DocumentController;
+use App\Http\Controllers\Admin\History\HistoryController;
 use App\Http\Controllers\Admin\History\UserController as UserHistoryController;
 use App\Http\Controllers\Admin\Imbox\ImboxController;
 use App\Http\Controllers\Admin\Reports\ReportController;
@@ -56,9 +57,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.' ],
 
     Route::get('reports', ReportController::class)->name('reports.index');
 
-    Route::resource('histories', UserHistoryController::class)->only('index','show');
+    Route::get('histories', [HistoryController::class,'history'])->name('history.index');
 
-    Route::get('documents', DocumentController::class)->name('documents.index');
+    Route::get('documents', [HistoryController::class,'document'])->name('documents.index');
 
 });
 

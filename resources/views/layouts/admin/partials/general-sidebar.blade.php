@@ -56,7 +56,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link {{isActiveRoute(2,"histories")}}" href="{{route('admin.histories.index')}}">
+        <a class="nav-link {{isActiveRoute(2,"histories")}}" href="{{route('admin.history.index')}}">
             <img src="{{ asset('img/icons/Historial.png') }}" class="mr-2" width="16px" alt="customers" >
             <span class="nav-link-text">Historial</span>
         </a>

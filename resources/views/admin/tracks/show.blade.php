@@ -3,16 +3,14 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-6"><h3 class="mb-0 text-primary">{{ $user }}</h3></div>
+                <div class="col-md-6">
+                    <h3 class="mb-0 text-primary">
+                        @include('components.back',['route' => route('admin.tracks.index')])
+                        {{ $user->full_name }}
+                    </h3>
+                </div>
                 <div class="col-md-6 text-right" >
-                    <div class="form-group offset-md-8 col-md-4 align-content-center">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
-                            </div>
-                            <input class="form-control" type="text" id="mytracksv2month">
-                        </div>
-                    </div>
+                    @include('components.datepicker', ['name' => 'admintrackshow'])
                 </div>
             </div>
         </div>
@@ -102,7 +100,7 @@
 
         </div>
     </div>
-    <activity-show-component></activity-show-component>
+    <activity-show></activity-show>
 
 @endsection
 @push('js')
@@ -112,7 +110,7 @@
 
             let date = '{!! request('yearAndMonth') ?: now()->format('Y-m') !!}'
 
-            $("#mytracksv2month")
+            $("#admintrackshow")
                 .datetimepicker({
                     format: "MM/YYYY",
                     locale: "es",
@@ -132,35 +130,7 @@
                     window.location.href = base_url+"?yearAndMonth="+e.date.format('YYYY-MM');
                 });
 
-            $('#dtImboxBasic').DataTable({
-                "dom": '<"top"fl>rt<"bottom"ip>',
-                language: {
-                    "url": "{{ URL::asset('datatables.json') }}"
-                },
-            });
-
         } );
     </script>
-@endpush
-@push('styles')
-    <style>
-        #dtImboxBasic_filter {
-            float: left !important;
-        }
-
-        #dtImboxBasic_filter input {
-            width: 400px;
-            outline: 0px solid #aaa;
-        }
-
-        #dtImboxBasic_length {
-            float: right !important;
-        }
-        #dtImboxBasic_length label {
-            display:flex;
-            justify-content: center;
-            align-items: center;
-        }
-    </style>
 @endpush
 

@@ -71,7 +71,7 @@ class ActivityRepo extends BaseRepository implements IActivity
 
     public function listActivitiesToDashboard(string $from, string $to)
     {
-        return $this->model::with(['customer','user','tag'])
+        return $this->model::with(['customer','user','tag','sub_activities','partials'])
             ->whereCompanyId(companyID())
             ->whereDate('start_date','>=',$from)
             ->whereDate('due_date','<=',$to)
@@ -84,7 +84,10 @@ class ActivityRepo extends BaseRepository implements IActivity
                     'usuName' => $activity->user->full_name,
                     'tagId'   => $activity->tag_id,
                     'tagName' => $activity->tag->name,
-                    'timeReal' => $activity->time_real,
+                    'timeEstimated' => $activity->estimatedTime(), //compare between customers
+                    'timeReal'      => $activity->totalTimeEntered($activity['sub_activities'],$activity['partials']), //compare between customers
+                    'startDateMonth' => Carbon::parse($activity->start_date)->format('Y-m'), //history hours company
+                    'startDate'      => Carbon::parse($activity->start_date)->format('Y-m-d'), //history hours company
                 ];
             });
     }
@@ -191,7 +194,7 @@ class ActivityRepo extends BaseRepository implements IActivity
 
     public function listActivityByUser(int $id, $from, $to)
     {
-        return $this->model->with('user','sub_activities','customer','created_by', 'tag')
+        return $this->model->with('user','sub_activities','customer','created_by', 'tag','partials')
             ->whereUserId($id)
             ->whereDate('start_date','>=',$from)
             ->whereDate('due_date','<=',$to)

@@ -2,7 +2,7 @@
 @section('content')
 <div class="row">
     <div class="col-md-6">
-        <h3>PANEL DE CONTROL GENERAL</h3>
+        <h3 class="text-primary">PANEL DE CONTROL GENERAL</h3>
     </div>
     <div class="col-md-6">
         @include('components.datepicker',['name' => 'dtpickerDashboard'])
@@ -45,7 +45,11 @@
                     <tags-percentage :p_percentage="{{ json_encode($tagPercentage) }}"></tags-percentage>
                 </div>
             </div>
-
+            <br>
+            <customers-compare
+                :c_customers="{{json_encode($customers)}}"
+                :p_yearandmonth="{{ json_encode(request('yearAndMonth') ?: now()->format('Y-m')) }}">
+            </customers-compare>
         </div>
     </div>
 @endsection

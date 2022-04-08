@@ -17,6 +17,8 @@ Route::group(['prefix' => 'api/admin', 'middleware' => ['auth']], function () {
 Route::group(['prefix' => 'api', 'middleware' => ['auth']], function () {
 
 
+    Route::get('dashboard/compare',App\Http\Controllers\Front\Dashboard\DashboardController::class);
+
     Route::get('users/{user}/customers',UserCustomerController::class);
     Route::get('users/{user_id}/workplans',WorkplanController::class);
 

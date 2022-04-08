@@ -43,8 +43,8 @@ class DashboardController extends Controller
             'usuMoreHours'  => $usersHours['moreHours'],
             'usuLessHours'  => $usersHours['lessHours'],
             'tagPercentage' => $this->tagRepo->percentage($activities),
-            'tagHistory'    => $this->tagRepo->historyHours($this->subMonths($date['from']))
-         //   'customers'     => $this->customerRepo->listCustomers('name','asc',['id','name'])
+            'tagHistory'    => $this->tagRepo->historyHours($this->subMonths($date['from'])),
+            'customers'     => $this->customerRepo->listCustomers('name','asc',['id','name'])
         ]);
     }
 

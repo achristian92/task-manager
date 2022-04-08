@@ -9,6 +9,9 @@ use App\Repositories\Activities\Transformations\ActivityTransformable;
 use App\Repositories\Companies\Company;
 use App\Repositories\Tools\DatesTrait;
 use App\Repositories\Users\Repository\IUser;
+use App\Repositories\Users\User;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class TrackController extends Controller
@@ -26,10 +29,10 @@ class TrackController extends Controller
     {
         $user = \Auth::user();
 
-        $dateFormat = $this->getDateFormats(request()->input('yearAndMonth'));
+        $date = $this->getDateFormats(request()->input('yearAndMonth'));
         $setting = Company::find($user->company_id);
         $usersCanSeeIds = $this->userRepo->listUsersCanSee()->pluck('id');
-        $activities = $this->activityRepo->listActivities($dateFormat['from'],$dateFormat['to'])
+        $activities = $this->activityRepo->listActivities($date['from'],$date['to'])
             ->transform(function ($activity) {
                 return $this->transformActivityAdvance($activity);
             });
@@ -61,6 +64,27 @@ class TrackController extends Controller
         return view('admin.tracks.index',[
             'tracks'     => $tracks,
             'hoursMonth' => intval($setting->hours),
+        ]);
+    }
+
+    public function show(User $track)
+    {
+        $date = $this->getDateFormats(request()->input('yearAndMonth'));
+
+        $activities = $this->activityRepo->listActivityByUser($track->id,$date['from'],$date['to'])
+            ->transform(function ($activity) {
+                return $this->transformActivityAdvance($activity);
+            });
+        $arrayEstimatedTime = Arr::pluck($activities,'estimatedTime');
+        $arrayDuration = Arr::pluck($activities,'realTime');
+
+        return view('admin.tracks.show',[
+            'user'       => $track,
+            'timeWorked' => sumArraysTime($arrayEstimatedTime),
+            'timeReal'   => sumArraysTime($arrayDuration),
+            'progress'   => $this->activityRepo->progress($activities),
+            'resume'     => $this->activityRepo->resume($activities),
+            'activities' => $activities,
         ]);
     }
 }

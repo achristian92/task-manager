@@ -20,7 +20,7 @@ class CreateUserHistoryTable extends Migration
             $table->text('description');
             $table->json('model')->nullable();
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('company_id');
+            $table->unsignedInteger('company_id')->default(1);
             $table->timestamps();
         });
     }

@@ -3,11 +3,15 @@
 
 namespace App\Repositories\Customers\Repository;
 
+use App\Repositories\Activities\Activity;
 use App\Repositories\Customers\Customer;
 use App\Repositories\Histories\UserHistory;
 use App\Repositories\Tools\DatesTrait;
 use App\Repositories\Tools\TActivityReport;
 use App\Repositories\Tools\UploadableTrait;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
+use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use Prettus\Repository\Eloquent\BaseRepository;
 
 class CustomerRepo extends BaseRepository implements ICustomer
@@ -64,4 +68,43 @@ class CustomerRepo extends BaseRepository implements ICustomer
             ->get($columns);
     }
 
+    public function historyHours(array $months, array $ids, $sub = 6)
+    {
+        $activities = Activity::with(['customer','sub_activities','partials'])
+            ->whereCompanyId(companyID())
+            ->whereIn('customer_id',$ids)
+            ->whereDate('start_date','>=',$months['fromYmd'])
+            ->whereDate('due_date','<=',$months['toYmd'])
+            ->get()->transform(function ($activity) {
+                return [
+                    'custId'    => $activity->customer_id,
+                    'custName'  => $activity->customer->name,
+                    'timeReal' => $activity->totalTimeEntered($activity['sub_activities'],$activity['partials']), //compare between customers
+                    'month'    => Carbon::parse($activity->start_date)->format('Y-m')
+                ];
+            });
+
+        $dataset = $activities->groupBy('custName')->map(function ($activities, $tag) use ( $months ) {
+            foreach ($months['formatYm'] as $month) {
+                $bymonth = $activities->where('month',$month);
+                list($hour, $minute) = explode(':', sumTime($bymonth,'timeReal'));
+                $hours[] = $hour;
+            }
+            return [
+                'seriesname' => Str::limit($tag, 15),
+                'data' => self::transformDataSource($hours,'value'),
+            ];
+        })->values();
+
+        return [
+            'categories' => self::transformDataSource($months['names'],'label'),
+            'dataset' => $dataset
+        ];
+    }
+    private function transformDataSource(array $data, string $text)
+    {
+        return collect($data)->map(function ($name) use ($text){
+            return [ $text => $name];
+        });
+    }
 }

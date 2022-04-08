@@ -30,6 +30,11 @@ Vue.component('users-more-hours', require('./components/fusioncharts/admin/dashb
 Vue.component('users-less-hours', require('./components/fusioncharts/admin/dashboard/UsersLessHours').default);
 Vue.component('tags-history', require('./components/fusioncharts/components/TagHistory').default);
 Vue.component('tags-percentage', require('./components/fusioncharts/admin/dashboard/TagPercentage').default);
+Vue.component('customers-compare', require('./components/fusioncharts/admin/dashboard/Compare').default);
+Vue.component('customers-compare-activities', require('./components/fusioncharts/admin/dashboard/CompareActivities').default);
+Vue.component('customers-compare-hours', require('./components/fusioncharts/admin/dashboard/CompareHours').default);
+Vue.component('customers-history-hours', require('./components/fusioncharts/admin/dashboard/CustomerHistoryHours').default);
+Vue.component('customers-compare', require('./components/fusioncharts/admin/dashboard/Compare').default);
 
 Vue.component('tags-btn-add', require('./components/admin/tags/BtnAdd.vue').default);
 Vue.component('tags-list', require('./components/admin/tags/List.vue').default);
