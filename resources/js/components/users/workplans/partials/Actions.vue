@@ -32,7 +32,7 @@
                 <span class="btn-inner--icon">
                     <i class="fas fa-download"></i>
                 </span>
-                Exportar - dias
+                Exportar x Día
             </a>
             <a href=""
                @click.prevent="handleDuplicate"
@@ -107,16 +107,16 @@ export default {
         },
         massDelete() {
             this.isLoading = true
-            let url = `${this.appUrl}api/users/${this.user_id}/planned/planned-status`
-            axios.get(url , {
+            let yearAndMonth =  moment(this.date.from).format('YYYY-MM-DD')
+
+            axios.get(`${this.appUrl}api/my-workplans/mass-planned` , {
                 params: {
-                    filter_month: this.date.monthIndex,
-                    filter_year: this.date.year,
+                    yearAndMonth: yearAndMonth,
                 }
             })
                 .then(res => {
                     this.isLoading = false
-                    EventBus.$emit('dataMassDestroyWorkPlan', res.data.activities);
+                    EventBus.$emit('ev-workplans-user', res.data.activities);
                 })
                 .catch (error => {
                     this.isLoading = false
@@ -129,13 +129,13 @@ export default {
             e.preventDefault()
             Vue.$toast.success("Descargando...");
             let yearAndMonth =  moment(this.date.from).format('YYYY-MM-DD')
-            window.location =  `${this.appUrl}api/users/${this.user_id}/planned/export-list?yearAndMonth=${yearAndMonth}`
+            window.location =  `${this.appUrl}api/reports/users/${this.user_id}/workplans?yearAndMonth=${yearAndMonth}`
         },
         handleExportDays (e) {
             e.preventDefault()
             Vue.$toast.success("Descargando...");
             let yearAndMonth =  moment(this.date.from).format('YYYY-MM-DD')
-            window.location =  `${this.appUrl}api/users/${this.user_id}/planned/export-day?yearAndMonth=${yearAndMonth}`
+            window.location =  `${this.appUrl}api/reports/users/${this.user_id}/workplan-days?yearAndMonth=${yearAndMonth}`
         },
         handleDuplicate() {
             $('#DuplicateWorkPlanModal').modal('show');

@@ -13,7 +13,7 @@
                 @endif
                 @if ($userCurrent->isCollaborator() && request()->segment(1) !== 'user')
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('user.workplans.index',$userCurrent->id) }}">
+                        <a class="nav-link" href="{{ route('user.workplans.index') }}">
                             <i class="fa fa-arrow-right mr-1 ml-1" aria-hidden="true"></i>
                             Mi Plan
                         </a>

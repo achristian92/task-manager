@@ -71,4 +71,26 @@ trait ActivityTransformable
         ];
     }
 
+    public function transformActivityReport(Activity $activity,bool $onlyPlanned = false)
+    {
+        $dateStartOrCompleted = $activity->start_date;
+        if (! $onlyPlanned)
+            $dateStartOrCompleted = $activity->isCompletedState() ? $activity->completed_date : $activity->start_date;
+
+        return [
+            'isPlanned'     => (bool) $activity->is_planned,
+            'name'          => $activity->name,
+            'counter'       => $activity->user->full_name,
+            'customer'      => $activity->customer->name,
+            'startDate'     => Carbon::parse($dateStartOrCompleted)->format('Y-m-d'),
+            'startDateFormat'=> Carbon::parse($dateStartOrCompleted)->format('d/m/y'),
+            'estimatedTime' => $activity->estimatedTime(),
+            'realTime'      => $activity->currentRecordedTime(),
+            'statusName'    => $activity->statusName(),
+            'color'         => _colorStatusHex($activity->currentStatus()),
+            'tag'          =>  $activity->tag->name,
+            'description'   => $activity->description,
+        ];
+    }
+
 }

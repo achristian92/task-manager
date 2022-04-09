@@ -11,7 +11,7 @@
         :c_tags       = "{{json_encode($tags)}}">
     </activity-form>
 
-{{--    <import-work-plan-component></import-work-plan-component>--}}
-{{--    <duplicate-work-plan-component></duplicate-work-plan-component>--}}
-{{--    <mass-destroy-work-plan-component></mass-destroy-work-plan-component>--}}
+    <workplans-user-import></workplans-user-import>
+    <workplans-user-mass-delete></workplans-user-mass-delete>
+    <workplans-user-duplicate></workplans-user-duplicate>
 @endsection

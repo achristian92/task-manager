@@ -33,6 +33,7 @@ return new class extends Migration
             $table->boolean('send_overdue')->default(true);
             $table->boolean('send_credentials')->default(true);
             $table->boolean('notify_deadline')->default(true);
+            $table->boolean('notify_assignment')->default(true);
             $table->string('telephone')->nullable();
             $table->string('email');
             $table->string('password');

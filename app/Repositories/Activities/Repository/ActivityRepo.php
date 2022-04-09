@@ -118,6 +118,17 @@ class ActivityRepo extends BaseRepository implements IActivity
             ->whereDate('due_date','<=',$to)
             ->get();
     }
+    public function workPlanOnlyStatusPlannedsByUser(int $user_id, $from, $to)
+    {
+        return $this->model::with(['customer'])
+            ->whereUserId($user_id)
+            ->whereIsPlanned(true)
+            ->whereStatus(Activity::TYPE_PLANNED)
+            ->whereDate('start_date','>=',$from)
+            ->whereDate('due_date','<=',$to)
+            ->orderBy('start_date')
+            ->get();
+    }
 
     public function resumeByUser(Collection $activities): array
     {
@@ -211,4 +222,6 @@ class ActivityRepo extends BaseRepository implements IActivity
             ->orderBy('start_date')
             ->get();
     }
+
+
 }

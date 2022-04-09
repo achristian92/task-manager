@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\Tracks\TrackController;
 use App\Http\Controllers\Admin\Users\UserActionController;
 use App\Http\Controllers\Admin\Users\UserController;
 use App\Http\Controllers\Admin\WorkPlans\WorkPlanController;
+use App\Http\Controllers\Front\Users\WorkPlanImportController;
 use App\Http\Controllers\Setting\Companies\CompanyController;
 use App\Http\Controllers\Setting\Profiles\ProfileController;
 use App\Http\Controllers\TestController;
@@ -66,8 +67,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.' ],
 Route::group(['prefix' => 'user', 'middleware' => ['auth'], 'as' => 'user.' ], function () {
 
     Route::get('my-workplans', MyWorkPlanController::class)->name('workplans.index');
+
     Route::get('my-tracks',MyTrackController::class)->name('tracks.index');
+
     Route::get('my-imbox',MyImboxController::class)->name('imbox.index');
+
     Route::get('my-reports',MyReportController::class)->name('reports.index');
 });
 

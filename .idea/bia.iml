@@ -145,6 +145,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/bugsnag/bugsnag-psr-logger" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/vlucas/phpdotenv" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/bfinlay/laravel-excel-seeder" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laraveles/spanish" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

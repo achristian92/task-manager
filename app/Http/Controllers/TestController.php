@@ -23,13 +23,11 @@ class TestController extends Controller
 
     public function __invoke()
     {
-        $user = User::find(6);
+
+        $date =  Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject('0.020833333333333'))->format('H:i');
+        dd($date);
 
 
-       return view('emails.users.new-user',[
-           'user'    => $user,
-           'company' => $user->company
-       ]);
     }
 
 

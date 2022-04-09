@@ -28,8 +28,8 @@ class WorkplanController extends Controller
     {
         $date = $this->getDateFormats($request->input('yearAndMonth'));
 
-        $activities = $this->activityRepo->workPlansByUser($user_id,$date['from'],$date['to']);
-
+        $query = $this->activityRepo->workPlansByUser($user_id,$date['from'],$date['to']);
+        $activities = self::applyFilterRequest($query);
         $resume = $this->activityRepo->resumeByUser($activities);
 
         return response()->json([
@@ -96,4 +96,16 @@ class WorkplanController extends Controller
         ];
     }
 
+    private function applyFilterRequest($activities): Collection
+    {
+        if (request()->filled('customer_id'))
+            $activities = $activities->where('customer_id',request()->input('customer_id'));
+
+
+        if (request()->filled('status_id'))
+            $activities = $activities->where('status',request()->input('status_id'));
+
+
+        return $activities;
+    }
 }

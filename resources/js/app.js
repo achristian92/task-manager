@@ -55,6 +55,9 @@ Vue.component('admin-imbox-basic', require('./components/admin/imbox/GeneralTabl
 Vue.component('workplans-user-show', require('./components/users/workplans/Show.vue').default);
 Vue.component('workplans-user-filters', require('./components/users/workplans/partials/Filters.vue').default);
 Vue.component('workplans-user-actions', require('./components/users/workplans/partials/Actions.vue').default);
+Vue.component('workplans-user-import', require('./components/users/workplans/partials/Import.vue').default);
+Vue.component('workplans-user-mass-delete', require('./components/users/workplans/partials/MassDelete.vue').default);
+Vue.component('workplans-user-duplicate', require('./components/users/workplans/partials/Duplicate.vue').default);
 
 Vue.component('user-imbox-basic', require('./components/users/imbox/GeneralTable').default);
 

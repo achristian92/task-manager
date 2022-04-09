@@ -3,15 +3,18 @@
 namespace App\Http\Controllers\Front\Activities;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendEmailActivityAssigned;
 use App\Repositories\Activities\Activity;
 use App\Repositories\Activities\Repository\IActivity;
 use App\Repositories\Activities\Requests\ActivityMassApproveRequest;
 use App\Repositories\Activities\Requests\ActivityRequest;
 use App\Repositories\Activities\Transformations\ActivityTransformable;
+use App\Repositories\Histories\UserHistory;
 use App\Repositories\Tools\DatesTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ActivityController extends Controller
 {
@@ -34,8 +37,8 @@ class ActivityController extends Controller
             $this->activityRepo->updateActivity(['previous_id' => NULL], $activity->id);
 
 
-//        if ($activity->isOwnerDifferent())
-//            $this->notifyAssignment($activity);
+        if ($activity->isOwnerDifferent())
+            $activity->notifyAssignment();
 
         return response()->json([
             'msg' => 'Actividad creada',
@@ -139,10 +142,10 @@ class ActivityController extends Controller
         else
             $this->activityRepo->updateActivity(['previous_id' => NULL], $activity->id);
 
-//        if ($request->user_id !== $activity->created_by_id) {
-//            $activity->reassign($request);
-//            $this->activityRepo->saveHistory($activity,'Actividad reasignada a '.$activity->user->name);
-//        }
+        if ($request->user_id !== $activity->created_by_id) {
+            $activity->reassign($request);
+            $this->activityRepo->saveHistory($activity,'Actividad reasignada a '.$activity->user->name);
+        }
 
         return response()->json([
             'msg' => 'Actividad actualizada',

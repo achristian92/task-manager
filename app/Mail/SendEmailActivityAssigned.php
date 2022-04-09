@@ -14,19 +14,11 @@ class SendEmailActivityAssigned extends Mailable implements ShouldQueue
     use Queueable, SerializesModels;
 
 
-    /**
-     * @var Activity
-     */
-    private $activity;
-    /**
-     * @var array
-     */
-    private $setup;
+    private Activity $activity;
 
-    public function __construct(Activity $activity, array $setup)
+    public function __construct(Activity $activity)
     {
         $this->activity = $activity;
-        $this->setup = $setup;
     }
 
     /**
@@ -37,7 +29,7 @@ class SendEmailActivityAssigned extends Mailable implements ShouldQueue
     public function build()
     {
         $data = [
-            'toUser'       => $this->activity->user->name,
+            'toUser'       => $this->activity->user->full_name,
             'createdBy'    => $this->activity->created_by->full_name,
             'activity'     => $this->activity->name,
             'customer'     => $this->activity->customer->name,
@@ -46,12 +38,12 @@ class SendEmailActivityAssigned extends Mailable implements ShouldQueue
             'status'       => $this->activity->statusName(),
         ];
 
-        return $this->view('emails.activity.notifyAssignment')
+        return $this->view('emails.users.assigned-activity')
             ->from(config('mail.from.address'), config('mail.from.name'))
             ->subject( config('mail.from.new_activity_for_you')." - ". $data['activity'])
             ->with([
                 'data'    => $data,
-                'setting' => $this->setup
+                'company' => $this->activity->user->company
             ]);
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Repositories\Activities;
 
+use App\Mail\SendEmailActivityAssigned;
 use App\Repositories\ActivityHistories\ActivityHistory;
 use App\Repositories\Customers\Customer;
+use App\Repositories\Histories\UserHistory;
 use App\Repositories\PartialActivities\PartialActivity;
 use App\Repositories\SubActivities\SubActivity;
 use App\Repositories\Tags\Tag;
@@ -11,7 +13,9 @@ use App\Repositories\Users\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class Activity extends Model
 {
@@ -61,6 +65,11 @@ class Activity extends Model
                 (($this->isPartialCompletedState() ? self::TYPE_STATE[self::TYPE_PARTIAL] : self::TYPE_STATE[self::TYPE_COMPLETED])));
     }
 
+    public function isPartialComplete(): bool
+    {
+        return $this->is_partial;
+    }
+
     public function isPlannedState():bool
     {
         return $this->status === self::TYPE_PLANNED;
@@ -104,6 +113,11 @@ class Activity extends Model
     public function estimatedTime():string
     {
         return $this->isPlanned() ? $this->time_estimate : "00:00";
+    }
+
+    public function currentRecordedTime(): string
+    {
+        return empty($this->time_real) ? "00:00" : $this->time_real;
     }
 
     public function totalTimeEntered(Collection $subActivities, Collection $partialActivities)
@@ -156,6 +170,50 @@ class Activity extends Model
     {
         return $this->user_id !== $this->created_by_id;
     }
+
+    public function isPartialOrHasSubActivities(): bool
+    {
+        return $this->isPartialComplete() || $this->with_subactivities;
+    }
+
+    public function reassign(Request $request): bool
+    {
+        if (! $this->isPartialOrHasSubActivities()) {
+
+            if (!$this->notified)
+                self::notifyAssignment();
+
+            return $this->update([ 'is_reassign' => 1, 'notified' => 1 ]);
+
+        }
+
+        $newActivity                      = $this->replicate();
+        $newActivity->user_id             = $request->user_id;
+        $newActivity->is_reassign         = 1;
+        $newActivity->is_partial          = 0;
+        $newActivity->with_subactivities  = 0;
+        $newActivity->notified            = 1;
+        $newActivity->push();
+
+        $newActivity->notifyAssignment();
+
+
+        $newActivity->histories()->create([
+            'user'          => Auth::user()->full_name,
+            'description'   => "Actividad($this->id) reasignada a " .$newActivity->user->name,
+            'registered_at' => Carbon::now()
+        ]);
+
+        History(UserHistory::STORE,"Replico la actividad  $newActivity->name",$newActivity);
+
+        //CURRENT UPDATE
+        return $this->update([
+            'user_id'        => $this->created_by_id,
+            'status'         => self::TYPE_COMPLETED,
+            'completed_date' => now(),
+        ]);
+    }
+
 
     public function isPlanned(): bool
     {
@@ -216,6 +274,19 @@ class Activity extends Model
         }
 
         return !in_array(false,$array_value);
+
+    }
+
+    public function notifyAssignment()
+    {
+        $company = $this->user->company;
+
+        if ($company->notifyAssignmentActivity()) {
+            history(UserHistory::NOTIFY,"Notificó la asignación de la actividad  $this->name",$this);
+            Mail::to($this->user->email)
+                ->send(new SendEmailActivityAssigned($this));
+        }
+
 
     }
 

@@ -382,13 +382,14 @@ export default{
             e.preventDefault()
             Vue.$toast.success("Descargando...");
             let yearAndMonth =  moment(this.date.from).format('YYYY-MM-DD')
-            window.location =  `${this.appUrl}api/users/${this.userIDFilter}/planned/export-list?yearAndMonth=${yearAndMonth}`
+            window.location =  `${this.appUrl}api/reports/users/${this.userIDFilter}/workplans?yearAndMonth=${yearAndMonth}`
         },
         handleExportDays (e) {
             e.preventDefault()
             Vue.$toast.success("Descargando...");
             let yearAndMonth =  moment(this.date.from).format('YYYY-MM-DD')
-            window.location =  `${this.appUrl}api/users/${this.userIDFilter}/planned/export-day?yearAndMonth=${yearAndMonth}`
+            window.location =  `${this.appUrl}api/reports/users/${this.userIDFilter}/workplan-days?yearAndMonth=${yearAndMonth}`
+
         },
 
         setCounters(counter) {

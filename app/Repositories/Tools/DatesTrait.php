@@ -26,6 +26,19 @@ trait DatesTrait
 
     }
 
+    public function rangeDays(string $from, string $to)
+    {
+        $period = CarbonPeriod::create($from, $to);
+        $rangeDays = [];
+        foreach($period as $date) {
+            $rangeDays[] = $date->format('Y-m-d');
+        }
+
+        return [
+            'range' => $rangeDays,
+        ];
+    }
+
     public function subMonths($fromMonth ,$sub = 6)
     {
         $from = Carbon::createFromDate($fromMonth)->startOfMonth();
@@ -42,10 +55,20 @@ trait DatesTrait
 
         return [
             'fromYmd'  => $substart,
-            'toYmd'    =>  $end,
+            'toYmd'    => $end,
             'formatYm' => $rangeMonth,
             'names'    => $rangeMonthName
         ];
+    }
+
+    public function addTimeByDate(array $period,$activities, string $value = 'realTime')
+    {
+        foreach ($period as $date) {
+            $filter = collect($activities)->where('startDate',$date);
+            $values[] = sumTime($filter,$value);
+        }
+
+        return $values;
     }
 
 }

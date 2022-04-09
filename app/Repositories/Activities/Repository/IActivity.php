@@ -31,6 +31,8 @@ interface IActivity
 
     public function workPlansByUser(int $user_id, $from, $to);
 
+    public function workPlanOnlyStatusPlannedsByUser(int $user_id, $from, $to);
+
     public function listActivityByUser(int $id, $from, $to);
 
     public function listActivityByCustomer(int $id, $from, $to);
