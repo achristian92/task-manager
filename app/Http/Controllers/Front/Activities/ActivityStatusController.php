@@ -7,6 +7,7 @@ use App\Repositories\Activities\Activity;
 use App\Repositories\Activities\Repository\IActivity;
 use App\Repositories\Activities\Requests\ActivityMassApproveRequest;
 use App\Repositories\Activities\Transformations\ActivityTransformable;
+use App\Repositories\Histories\UserHistory;
 use App\Repositories\Tools\DatesTrait;
 use Illuminate\Http\Request;
 
@@ -80,6 +81,28 @@ class ActivityStatusController extends Controller
 
         return response()->json([
             'msg' => 'Registro actualizado'
+        ]);
+    }
+
+    public function reset(int $id)
+    {
+        $activity = Activity::find($id);
+        $activity->sub_activities()->delete();
+        $activity->partials()->delete();
+
+        $activity->update([
+            'status'            => Activity::TYPE_APPROVED,
+            'time_real'         => "00:00",
+            'is_partial'        => false,
+            'with_subactivities'=> false,
+            'completed_date'    => null
+        ]);
+
+        history(UserHistory::RESET,"Reseteó a aprobado la actividad $activity->name",$activity);
+
+        return response()->json([
+            'msg'      => 'Actividad restablecida',
+            'activity' => $this->transformActivityAdvance(Activity::find($id))
         ]);
     }
 }

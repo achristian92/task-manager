@@ -22,7 +22,7 @@
         @slot('title',$title. ' ['. count($activities).']')
         @slot('actions')
             @if(request()->input('typeTab') === "today")
-                <add-new-activity></add-new-activity>
+                <activity-btn-add></activity-btn-add>
             @endif
             @if(request()->input('typeTab') === "overdue")
                 <div class="form-group offset-md-8 col-md-4 align-content-center">
@@ -41,9 +41,12 @@
         @endslot
     @endcomponent
     <activity-show></activity-show>
-    <activity-new-component :p_customers="{{ json_encode($customers) }}" :p_tags="{{ json_encode($tags) }}"></activity-new-component>
-    <activity-partial-component></activity-partial-component>
-    <sub-activity-component></sub-activity-component>
+    <activity-finish></activity-finish>
+    <activity-sub-form></activity-sub-form>
+    <activity-new-form
+        :p_customers="{{ json_encode($customers) }}"
+        :p_tags="{{ json_encode($tags) }}">
+    </activity-new-form>
 @endsection
 @push('js')
     <script type="text/javascript">
@@ -106,16 +109,3 @@
         }
     </style>
 @endpush
-
-
-
-{{--@extends('layouts.admin.app')--}}
-{{--@section('content')--}}
-{{--    <imbox-counter--}}
-{{--        :c_my_imbox = "{{$myImbox}}"--}}
-{{--        :c_customers = "{{json_encode($customers)}}"--}}
-{{--        :c_tags = "{{json_encode($tags)}}"--}}
-{{--    >--}}
-{{--    </imbox-counter>--}}
-
-{{--@endsection--}}

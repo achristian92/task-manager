@@ -14,6 +14,9 @@
     <a class="nav-link {{isActiveRoute(2,"my-imbox")}}" href="{{route('user.imbox.index','typeTab=today')}}">
         <img src="{{ asset('img/icons/actividades.png') }}" class="mr-2" width="15px" alt="customers" >
         <span class="nav-link-text">Mis Actividades</span>
+        @if ($overdue['own'] > 0)
+            <span class="badge badge-pill badge-danger" style="font-size: 90%; margin-left: 10px">{{$overdue['own']}}</span>
+        @endif
     </a>
 </li>
 <li class="nav-item">

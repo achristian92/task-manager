@@ -8,8 +8,10 @@ use App\Repositories\Activities\Activity;
 use App\Repositories\Activities\Repository\IActivity;
 use App\Repositories\Activities\Requests\ActivityMassApproveRequest;
 use App\Repositories\Activities\Requests\ActivityRequest;
+use App\Repositories\Activities\Requests\SubActivityRequest;
 use App\Repositories\Activities\Transformations\ActivityTransformable;
 use App\Repositories\Histories\UserHistory;
+use App\Repositories\SubActivities\SubActivity;
 use App\Repositories\Tools\DatesTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -150,6 +152,65 @@ class ActivityController extends Controller
         return response()->json([
             'msg' => 'Actividad actualizada',
         ]);
+    }
+
+    public function sub(SubActivityRequest $request, int  $id)
+    {
+        $activity = Activity::find($id);
+        $activity->with_subactivities = true;
+        $activity->save();
+
+        $sub = $activity->sub_activities()->create([
+            'name'         => $request->name,
+            'duration'     => $request->duration,
+            'completed_at' => Carbon::now()
+        ]);
+
+        $this->activityRepo->saveHistory($activity,"Creó la subactividad $request->name con $request->duration");
+
+        history(UserHistory::STORE,"Creó la subactividad $request->name",$sub);
+
+        return response()->json([
+            'activity' => $this->transformActivityAdvance(Activity::find($id)),
+            'msg'      => 'Subactividad creada'
+        ],201);
+    }
+
+    public function deletesub(int $id)
+    {
+        $sub = SubActivity::find($id);
+
+        $activity = $sub->activity;
+
+        history(UserHistory::DELETE,"Eliminó la subactividad $sub->name",$sub);
+        $sub->delete();
+
+        if (! $activity->sub_activities()->exists())
+            $activity->update(['with_subactivities' => false]);
+
+
+        return response()->json(['status'   => 'ok']);
+
+    }
+
+    public function new(ActivityRequest $request)
+    {
+        $request->merge([
+            'is_planned'     => false,
+            'user_id'        => \Auth::id(),
+            'status'         => Activity::TYPE_COMPLETED,
+            'completed_date' => Carbon::now()
+        ]);
+
+        $activity = $this->activityRepo->createActivity($request->all());
+
+        $description = "Actividad terminada con {$request->input('time_real')}";
+        $this->activityRepo->saveHistory($activity,$description);
+
+        return response()->json([
+            'msg' => "Actividad creada",
+            'activity' => $this->transformActivityAdvance($activity)
+        ],201);
     }
 
 

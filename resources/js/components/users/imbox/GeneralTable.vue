@@ -19,7 +19,7 @@
                     <input type="radio"
                            :value="activity.id"
                            v-model="checkedRadio"
-                           v-on:click="showRowImputDuration(index)"
+                           v-on:click="showImput(index)"
                            :disabled="!activity.canCompleted"/>
                 </td>
                 <td style="width: 10px;">
@@ -68,7 +68,7 @@
                         <button v-on:click="activityFinished(activity.id,activity.estimatedTime)" type="button" class="ml-2 d-inline-block btn btn-outline-success btn-sm">
                             <span><i class="fas fa-check"></i></span>
                         </button>
-                        <button v-on:click="cancelShowRowImputDuration" type="button" class="ml-1 d-inline-block btn btn-outline-danger btn-sm">x</button>
+                        <button v-on:click="cancelInput" type="button" class="ml-1 d-inline-block btn btn-outline-danger btn-sm">x</button>
                     </div>
                 </td>
 
@@ -81,7 +81,7 @@
                             <a v-show="showToComplete(activity)"
                                class="dropdown-item"
                                href=""
-                               @click.prevent="partial(activity.id)">
+                               @click.prevent="showActivityFinish(activity.id)">
                                 <span>Completado | Parcial</span>
                             </a>
                             <a v-show="showToComplete(activity)"
@@ -175,8 +175,8 @@ export default {
         canTakeAcions: function() {
             return this.tab === 'today' || this.tab ==='overdue'
         },
-        partial: function (activity_id) {
-            axios.get(`${this.appUrl}api/user/activities/${activity_id}`)
+        showActivityFinish: function (activity_id) {
+            axios.get(`${this.appUrl}api/activities/${activity_id}`)
                 .then(res => {
                     EventBus.$emit('partial-event', res.data);
                     $('#PartialActivityModal').modal('show');
@@ -191,9 +191,7 @@ export default {
         addSubTasks: function (activity_id) {
             EventBus.$emit('subactivity-event', activity_id);
         },
-        showRowImputDuration:function (index) {
-            this.showInputTimeReal = index
-        },
+
         activityFinished: function (activityID,duration) {
 
             if (!this.isValidTimeEstimated(duration) || duration === '00:00') {
@@ -201,7 +199,7 @@ export default {
                 return;
             }
 
-            axios.put(`${this.appUrl}api/users/activities/${activityID}/finished`,{
+            axios.put(`${this.appUrl}api/activities/${activityID}/finished`,{
                 duration: duration,
             })
                 .then(res => {
@@ -238,7 +236,10 @@ export default {
                     }
                 });
         },
-        cancelShowRowImputDuration: function () {
+        showImput:function (index) {
+            this.showInputTimeReal = index
+        },
+        cancelInput: function () {
             this.showInputTimeReal = -1;
             this.checkedRadio = false;
         },

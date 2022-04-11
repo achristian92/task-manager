@@ -4,7 +4,10 @@ namespace App\Repositories\Activities\Repository;
 
 use App\Repositories\Activities\Activity;
 use App\Repositories\Activities\Transformations\ActivityTrait;
+use App\Repositories\Activities\Transformations\ActivityTransformable;
 use App\Repositories\Histories\UserHistory;
+use App\Repositories\PartialActivities\PartialActivity;
+use App\Repositories\SubActivities\SubActivity;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +15,7 @@ use Prettus\Repository\Eloquent\BaseRepository;
 
 class ActivityRepo extends BaseRepository implements IActivity
 {
-    use ActivityTrait;
+    use ActivityTrait, ActivityTransformable;
 
     public function model()
     {
@@ -118,6 +121,7 @@ class ActivityRepo extends BaseRepository implements IActivity
             ->whereDate('due_date','<=',$to)
             ->get();
     }
+
     public function workPlanOnlyStatusPlannedsByUser(int $user_id, $from, $to)
     {
         return $this->model::with(['customer'])
@@ -141,7 +145,6 @@ class ActivityRepo extends BaseRepository implements IActivity
             'timeEstimate' => sumTime($activities,'time_estimate'),
         ];
     }
-
 
     public function approve(int $id)
     {
@@ -223,5 +226,41 @@ class ActivityRepo extends BaseRepository implements IActivity
             ->get();
     }
 
+    public function queryActivitiesReport(string $from, string $to)
+    {
+        $query = $this->model->with('customer','user','tag','sub_activities','partials')
+            ->whereDate('start_date','>=',$from)
+            ->whereDate('due_date','<=',$to)
+            ->orderBy('start_date')
+            ->get();
 
+        $keys = $query->modelKeys();
+
+        $activities = $query->transform(function ($activity) {
+                return $this->transformActivityReport($activity);
+            });
+
+        $sub = SubActivity::with('activity','activity.tag','activity.customer','activity.user')
+            ->whereIn('activity_id',$keys)
+            ->whereDate('completed_at','>=',$from)
+            ->whereDate('completed_at','<=',$to)
+            ->orderBy('completed_at')
+            ->get()
+            ->transform(function ($activity) {
+                return $this->transformSubActivityReport($activity);
+            });
+
+
+        $partials =  PartialActivity::with('activity','activity.tag','activity.customer','activity.user')
+            ->whereIn('activity_id',$keys)
+            ->whereDate('completed_at','>=',$from)
+            ->whereDate('completed_at','<=',$to)
+            ->orderBy('completed_at')
+            ->get()
+            ->transform(function ($activity) {
+                return $this->transformPartialActivityReport($activity);
+            });
+
+        return collect($activities)->merge(collect($sub))->merge($partials);
+    }
 }

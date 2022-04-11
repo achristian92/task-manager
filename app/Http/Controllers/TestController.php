@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\Activities\Activity;
+use App\Repositories\Activities\Repository\IActivity;
 use App\Repositories\Customers\Customer;
 use App\Repositories\Users\Repository\IUser;
 use App\Repositories\Users\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -15,17 +17,33 @@ use Illuminate\Support\Str;
 class TestController extends Controller
 {
     private $userRepo;
+    private IActivity $activityRepo;
 
-    public function __construct(IUser $IUser)
+    public function __construct(IUser $IUser, IActivity $IActivity)
     {
         $this->userRepo = $IUser;
+        $this->activityRepo = $IActivity;
     }
 
     public function __invoke()
     {
 
-        $date =  Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject('0.020833333333333'))->format('H:i');
-        dd($date);
+        $user = User::find(1);
+
+        $activities = $this->activityRepo->queryActivitiesReport('2022-04-01','2022-04-30')
+            ->where('userId',$user->id)
+            ->groupBy('customer')
+            ->transform(function ($activities, $customer) {
+                dd($activities);
+                return [
+                    'customer'           => $customer,
+                    'totalEstimatedTime' => sumTime(new DatabaseCollection($activities),'estimatedTime'),
+                    'totalRealTime'      => sumTime(new DatabaseCollection($activities),'realTime'),
+                    'activities'         => $activities
+                ];
+            })->values();
+
+        dd($activities);
 
 
     }

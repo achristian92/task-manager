@@ -39,44 +39,44 @@
                 </li>
             </ul>
             <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
-                @if($userCurrent->hasRole('admin'))
+                @if($userCurrent->isAdmin())
                     <li class="nav-item dropdown">
                         <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="ni ni-bell-55"></i>
+                            <i class="ni ni-bell-55"></i> {{ $notifications->count() }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right py-0 overflow-hidden">
                             <!-- Dropdown header -->
                             <div class="px-3 py-3">
-                                <h6 class="text-sm text-muted m-0">Tienes <strong class="text-primary"></strong> actividad por aprobar</h6>
+                                <h6 class="text-sm text-muted m-0">Tienes <strong class="text-primary">{{ $notifications->count() }}</strong> actividad por evaluar</h6>
                             </div>
                             <!-- List group -->
                             <div class="list-group list-group-flush">
-{{--                                @foreach($notifications as $alert)--}}
-{{--                                    <a href="#!" class="list-group-item list-group-item-action">--}}
-{{--                                        <div class="row align-items-center">--}}
-{{--                                            <div class="col-auto">--}}
-{{--                                                <!-- Avatar -->--}}
-{{--                                                <img alt="Image placeholder" src="{{ $alert->user->urlImg() }}" class="avatar rounded-circle">--}}
-{{--                                            </div>--}}
-{{--                                            <div class="col ml--2">--}}
-{{--                                                <div class="d-flex justify-content-between align-items-center">--}}
-{{--                                                    <div>--}}
-{{--                                                        <h4 class="mb-0 text-sm">{{ $alert->user->full_name }}</h4>--}}
-{{--                                                    </div>--}}
-{{--                                                    <div class="text-right text-muted">--}}
-{{--                                                        <small>{{ $alert->created_at->diffForHumans() }}</small>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                                <p class="text-sm mb-0">{{ Str::limit($alert->name,45) }}</p>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
-{{--                                    </a>--}}
-{{--                                @endforeach--}}
+                                @foreach($notifications as $alert)
+                                    <a href="#!" class="list-group-item list-group-item-action">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <!-- Avatar -->
+                                                <img alt="Image placeholder" src="{{ $alert->user->urlImg() }}" class="avatar rounded-circle">
+                                            </div>
+                                            <div class="col ml--2">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h4 class="mb-0 text-sm">{{ $alert->user->full_name }}</h4>
+                                                    </div>
+                                                    <div class="text-right text-muted">
+                                                        <small>{{ $alert->created_at->diffForHumans() }}</small>
+                                                    </div>
+                                                </div>
+                                                <p class="text-sm mb-0">{{ Str::limit($alert->name,45) }}</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                @endforeach
 
 
                             </div>
                             <!-- View all -->
-                            <a href="" class="dropdown-item text-center text-primary font-weight-bold py-3">Ver todos</a>
+                            <a href="{{ route('admin.imbox.index','typeTab=evaluation') }}" class="dropdown-item text-center text-primary font-weight-bold py-3">Ver todos</a>
                         </div>
                     </li>
                 @endif

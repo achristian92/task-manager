@@ -47,6 +47,11 @@ Vue.component('workplans-resume', require('./components/admin/workplans/partials
 Vue.component('activity-form', require('./components/shared/activities/Form').default);
 Vue.component('activity-show', require('./components/shared/activities/Show').default);
 
+Vue.component('activity-finish', require('./components/users/imbox/partials/finish').default);
+Vue.component('activity-sub-form', require('./components/users/imbox/partials/SubForm').default);
+Vue.component('activity-btn-add', require('./components/users/imbox/partials/BtnAdd').default);
+Vue.component('activity-new-form', require('./components/users/imbox/partials/NewForm').default);
+
 
 Vue.component('admin-imbox-evaluate', require('./components/admin/imbox/EvaluationTable').default);
 Vue.component('admin-imbox-basic', require('./components/admin/imbox/GeneralTable').default);
@@ -60,6 +65,18 @@ Vue.component('workplans-user-mass-delete', require('./components/users/workplan
 Vue.component('workplans-user-duplicate', require('./components/users/workplans/partials/Duplicate.vue').default);
 
 Vue.component('user-imbox-basic', require('./components/users/imbox/GeneralTable').default);
+
+
+Vue.component('report-users', require('./components/reports/users/Index').default);
+Vue.component('report-users-plannedvsreal', require('./components/reports/users/PlannedVsReal').default);
+Vue.component('report-users-totalhourscustomers', require('./components/reports/users/TotalHoursCustomers').default);
+
+Vue.component('report-customers', require('./components/reports/customers/Index').default);
+
+Vue.component('report-activities', require('./components/reports/activities/Index').default);
+
+
+
 
 
 import auth from './mixins/auth'

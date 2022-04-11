@@ -151,7 +151,7 @@ export default {
         SubActivityDestroy: function (subactivity_id) {
             let isConfirmed = confirm("Estas seguro de eliminar esta sub-actividad?")
             if(!isConfirmed) {return false;}
-            axios.delete( `${this.appUrl}api/users/activities/sub-activity/${subactivity_id}/destroy`)
+            axios.delete( `${this.appUrl}api/activities/sub/${subactivity_id}`)
                 .then(res => {
                     let indexInActivitiesData = this.subActivities.findIndex(i => i.id === subactivity_id);
                     if (indexInActivitiesData !== undefined) this.subActivities.splice(indexInActivitiesData, 1);

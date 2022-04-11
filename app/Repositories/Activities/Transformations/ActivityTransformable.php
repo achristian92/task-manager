@@ -3,6 +3,8 @@
 namespace App\Repositories\Activities\Transformations;
 
 use App\Repositories\Activities\Activity;
+use App\Repositories\PartialActivities\PartialActivity;
+use App\Repositories\SubActivities\SubActivity;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
@@ -80,6 +82,7 @@ trait ActivityTransformable
         return [
             'isPlanned'     => (bool) $activity->is_planned,
             'name'          => $activity->name,
+            'userId'        => $activity->user->id,
             'counter'       => $activity->user->full_name,
             'customer'      => $activity->customer->name,
             'startDate'     => Carbon::parse($dateStartOrCompleted)->format('Y-m-d'),
@@ -93,4 +96,35 @@ trait ActivityTransformable
         ];
     }
 
+    public function transformSubActivityReport(SubActivity $subActivity)
+    {
+        return  [
+            'isPlanned'     => false,
+            'name'          => '(SubActividad) '. $subActivity->name .'('.$subActivity->activity->name .')',
+            'counter'       => $subActivity->activity->user->full_name,
+            'customer'      => $subActivity->activity->customer->name,
+            'startDate'     => Carbon::parse($subActivity->completed_at)->format('Y-m-d'),
+            'estimatedTime' => '00:00',
+            'realTime'      => $subActivity->duration,
+            'statusName'    => Activity::TYPE_STATE[Activity::TYPE_COMPLETED],
+            'color'         => _colorStatusHex(Activity::TYPE_COMPLETED),
+            'tag'           => $subActivity->activity->tag->name
+        ];
+    }
+
+    public function transformPartialActivityReport(PartialActivity $partial)
+    {
+        return  [
+            'isPlanned'     => false,
+            'name'          => '(Avance) '.strtolower($partial->activity->name),
+            'counter'       => $partial->activity->user->full_name,
+            'customer'      => $partial->activity->customer->name,
+            'startDate'     => Carbon::parse($partial->completed_at)->format('Y-m-d'),
+            'estimatedTime' => '00:00',
+            'realTime'      => $partial->duration,
+            'statusName'    => Activity::TYPE_STATE[Activity::TYPE_COMPLETED],
+            'color'         => _colorStatusHex(Activity::TYPE_COMPLETED),
+            'tag'          => $partial->activity->tag->name
+        ];
+    }
 }

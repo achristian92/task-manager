@@ -39,4 +39,5 @@ interface IActivity
 
     public function listActivities(string $from, string $to);
 
+    public function queryActivitiesReport(string $from, string $to);
 }

@@ -2,7 +2,10 @@
 
 
 use App\Http\Controllers\Front\Activities\ActivityController;
+use App\Http\Controllers\Front\Activities\ActivityFinishedController;
 use App\Http\Controllers\Front\Activities\ActivityStatusController;
+use App\Http\Controllers\Front\Reports\Users\ReportPlannedVsRealController;
+use App\Http\Controllers\Front\Reports\Users\ReportUserController;
 use App\Http\Controllers\Front\Reports\Users\ReportWorkplanController;
 use App\Http\Controllers\Front\Tags\TagController;
 use App\Http\Controllers\Front\Users\UserCustomerController;
@@ -32,12 +35,21 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth']], function () {
     Route::post('my-workplans/duplicate', [WorkPlanImportController::class,'duplicate']);
 
     Route::resource("activities", ActivityController::class);
+    Route::post("activities/{id}/sub", [ActivityController::class,'sub']);
+    Route::delete("activities/sub/{id}", [ActivityController::class,'deletesub']);
+    Route::post("activity/new", [ActivityController::class,'new']);
+
+    Route::post("activities/mass-approve", [ActivityStatusController::class,'massapprove']);
     Route::put("activities/{id}/approve", [ActivityStatusController::class,'approve']);
     Route::put("activities/{id}/reserve", [ActivityStatusController::class,'reserve']);
-    Route::post("activities/mass-approve", [ActivityStatusController::class,'massapprove']);
+    Route::put("activities/{id}/reset", [ActivityStatusController::class,'reset']);
     Route::put("activities/{id}/approve-reject", [ActivityStatusController::class,'evaluate']);
+    Route::put("activities/{id}/finished", ActivityFinishedController::class);
 
     Route::get('reports/users/{user}/workplans',[ReportWorkplanController::class,'list']);
     Route::get('reports/users/{user}/workplan-days',[ReportWorkplanController::class,'day']);
 
+    Route::get("reports/users/planned-vs-real", [ReportUserController::class,'plannedvsreal']);
+    Route::get("reports/users/time-worked-by-customer", [ReportUserController::class,'hoursbycustomer']);
+    Route::get("reports/users/time-worked-by-day", [ReportUserController::class,]);
 });
