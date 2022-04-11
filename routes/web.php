@@ -40,8 +40,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.' ],
     Route::get('dashboard', DashboardController::class)->name('dashboard.index');
 
     Route::resource('customers', CustomerController::class);
+    Route::get('customers-export', [CustomerController::class,'export'])->name('customers.export');
+    Route::post('customers-import', [CustomerController::class,'import'])->name('customers.import');
 
     Route::resource('users', UserController::class);
+    Route::get('users-export', [UserController::class,'export'])->name('users.export');
     Route::get('users/{user}/history', [UserController::class,'history'])->name('users.history');
     Route::get('users/{user}/documents', [UserController::class,'document'])->name('users.document');
     Route::get('users/{user}/enable',[UserActionController::class,'enable'])->name('users.enable');

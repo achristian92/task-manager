@@ -17,11 +17,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="text-muted">Estado</label><br>
-                        @if ($customer->status)
-                            <span  class="badge badge-success">Activo</span>
-                        @else
-                            <span class="badge badge-danger">Inactivo</span>
-                        @endif
+                        @include('components.status', ['is_active' => $customer->is_active])
                     </div>
                 </div>
                 <div class="col-md-4">

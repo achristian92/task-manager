@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\Users;
 
+use App\Exports\Customers\CustomerExport;
+use App\Exports\Users\UserExport;
 use App\Http\Controllers\Controller;
 use App\Repositories\Customers\Repository\ICustomer;
 use App\Repositories\Documents\Repository\IUserDocument;
@@ -162,5 +164,12 @@ class UserController extends Controller
             'documents' => $this->userDocumentRepo->listDocumentsByUser($user->id)
         ]);
     }
+
+    public function export()
+    {
+        $users = $this->userRepo->listAllUsers();
+        return \Excel::download(new UserExport($users),'Lista-Usuarios.xlsx');
+    }
+
 
 }

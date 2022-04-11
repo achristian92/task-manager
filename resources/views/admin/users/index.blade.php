@@ -3,6 +3,7 @@
     @component('components.list')
         @slot('title','Lista de Usuarios ['. count($users).']')
         @slot('actions')
+            @include('components.btn-export',['route'=>  route('admin.users.export')])
             @include('components.btn-create',['url'=>  route('admin.users.create')])
         @endslot
         @slot('table')

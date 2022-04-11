@@ -1,7 +1,10 @@
 @extends('layouts.admin.app')
 @section('content')
     @component('components.list')
-        @slot('title','Historial de '.$user->name.' ['. count($history).']')
+        @slot('title')
+            @include('components.back',['route' => route('admin.users.index')])
+            Historial de {{ $user->name }} [{{ count($history) }}]
+        @endslot
         @slot('actions')@endslot
         @slot('table')
             <table class="table align-items-center table-flush border-bottom-0" id="dtUserHistory">

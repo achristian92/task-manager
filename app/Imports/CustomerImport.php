@@ -2,55 +2,57 @@
 
 namespace App\Imports;
 
+use App\Repositories\Activities\Activity;
 use App\Repositories\Customers\Customer;
+use App\Repositories\Tags\Tag;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
-class CustomerImport implements  ToCollection,WithHeadingRow
+class CustomerImport implements ToCollection,WithValidation,WithHeadingRow
 {
+    private int $company_id;
+
+    public function __construct(int $company_id)
+    {
+        $this->company_id = $company_id;
+    }
+
     public function collection(Collection $rows)
     {
-        $rows->each(function ($row,$key) {
-            $this->validationRow($row, $key);
-
+        $rows->each(function ($row) {
             Customer::updateOrCreate(
                 [
-                    'name' => $row['empresa'],
+                    'ruc'        => $row['ruc'],
+                    'company_id' => $this->company_id
                 ],
                 [
-                    'address'            => $row['direccion'],
-                    'ruc'                => $row['ruc'],
-                    'hours'              => empty($row['horas_trabajo_mensual']) ? null : $row['horas_trabajo_mensual'],
-                    'contact_email'      => $row['correo_contacto'],
-                    'contact_name'       => $row['nombre_contacto'],
-                    'contact_telephone'  => $row['telefono_contacto'],
-                    'notify_excess_time' => (bool) $row['notificar_si_excedo_horas'] === 'si' ? 1 : 0
-                ]
-            );
-
+                    'name'       => $row['empresa'],
+                    'address'    => $row['direccion'],
+            ]);
         });
-
     }
 
-    public function headingRow(): int
+    public function rules(): array
     {
-        return 1;
-    }
-
-    private function validationRow($row, int $key)
-    {
-        $currentRow = $key+1;
-
-        $messages = [
-            'required' => "El campo :attribute es requerido en la fila $currentRow.",
-            'max' => "El campo :attribute no debe tener mas de 255 caracteres en la fila $currentRow.",
+        return [
+            '*.empresa'   => [
+                'required',
+                'max:255',
+                Rule::unique('customers','name')->where(function ($query) {
+                    return $query->where('company_id',  '=', $this->company_id);
+                })
+            ],
+            '*.ruc'   => [
+                'required',
+                'max:11',
+                Rule::unique('customers','ruc')->where(function ($query) {
+                    return $query->where('company_id',  '=', $this->company_id);
+                })
+            ]
         ];
-
-        Validator::make($row->toArray(), [
-            'empresa' => 'required|max:255',
-        ], $messages)->validate();
     }
-
 }

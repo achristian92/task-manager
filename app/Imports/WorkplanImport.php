@@ -16,11 +16,12 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 class WorkplanImport implements ToCollection,WithValidation,WithHeadingRow
 {
 
-    private User $user;
 
-    public function __construct(User $user)
+    private int $company_id;
+
+    public function __construct(int $company_id)
     {
-        $this->user = $user;
+        $this->company_id = $company_id;
     }
 
     public function collection(Collection $rows)

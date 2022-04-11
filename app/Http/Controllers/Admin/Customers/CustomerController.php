@@ -4,7 +4,9 @@
 namespace App\Http\Controllers\Admin\Customers;
 
 
+use App\Exports\Customers\CustomerExport;
 use App\Http\Controllers\Controller;
+use App\Imports\CustomerImport;
 use App\Repositories\Activities\Repository\IActivity;
 use App\Repositories\Activities\Transformations\ActivityTransformable;
 use App\Repositories\Customers\Customer;
@@ -16,6 +18,8 @@ use App\Repositories\Tools\DatesTrait;
 use App\Repositories\Tools\UploadableTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class CustomerController extends Controller
 {
@@ -38,6 +42,7 @@ class CustomerController extends Controller
             'customers' => $this->customerRepo->listAllCustomers()
         ]);
     }
+
 
     public function create()
     {
@@ -109,6 +114,11 @@ class CustomerController extends Controller
         return back()->with('success', '¡Eliminación exitosa!');
     }
 
+    public function export()
+    {
+        $customers = $this->customerRepo->listAllCustomers();
+        return \Excel::download(new CustomerExport($customers),'Lista-Clientes.xlsx');
+    }
 
     public function import(Request $request)
     {
@@ -116,14 +126,11 @@ class CustomerController extends Controller
             'file_upload' => 'required|file|mimes:xls,xlsx'
         ]);
 
-        Excel::import(new CustomerImport(), $request->file('file_upload'));
+        Excel::import(new CustomerImport(companyID()), $request->file('file_upload'));
 
         return redirect()->route('admin.customers.index')->with('success', 'Información cargada');
     }
-    public function export()
-    {
-        $customer = Customer::orderBy('name','asc')->get(['name','ruc','address'])->toArray();
-        return Excel::download(new CustomerExport($customer), 'LISTA-CLIENTES.xlsx');
-    }
+
+
 
 }

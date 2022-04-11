@@ -16,6 +16,11 @@
                                class="form-control-file"
                                required>
                     </div>
+                    <br><br>
+                    <div class="alert alert-secondary">
+                        Descargar plantilla
+                        <a href="{{ asset('template/Plantilla-Clientes.xlsx') }}">Click aqui!</a>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button>

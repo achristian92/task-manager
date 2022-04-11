@@ -1,7 +1,10 @@
 @extends('layouts.admin.app')
 @section('content')
     @component('components.list')
-        @slot('title','Documentos de '.$user->name.' ['. count($documents).']')
+        @slot('title')
+        @include('components.back',['route' => route('admin.users.index')])
+        Documentos de {{ $user->name }} [{{ count($documents) }}]
+        @endslot
         @slot('actions')@endslot
         @slot('table')
             <table class="table align-items-center table-flush border-bottom-0" id="dtUserDocument">
