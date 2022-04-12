@@ -4,6 +4,8 @@
 use App\Http\Controllers\Front\Activities\ActivityController;
 use App\Http\Controllers\Front\Activities\ActivityFinishedController;
 use App\Http\Controllers\Front\Activities\ActivityStatusController;
+use App\Http\Controllers\Front\Reports\Activities\ActivityExportController;
+use App\Http\Controllers\Front\Reports\Customers\ReportCustomerController;
 use App\Http\Controllers\Front\Reports\Users\ReportPlannedVsRealController;
 use App\Http\Controllers\Front\Reports\Users\ReportUserController;
 use App\Http\Controllers\Front\Reports\Users\ReportWorkplanController;
@@ -51,5 +53,12 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth']], function () {
 
     Route::get("reports/users/planned-vs-real", [ReportUserController::class,'plannedvsreal']);
     Route::get("reports/users/time-worked-by-customer", [ReportUserController::class,'hoursbycustomer']);
-    Route::get("reports/users/time-worked-by-day", [ReportUserController::class,]);
+    Route::get("reports/users/time-worked-by-day", [ReportUserController::class,'hoursbydays']);
+
+    Route::get("reports/customers/time-worked-by-month", [ReportCustomerController::class,'day']);
+    Route::get("reports/customers/list-users-working", [ReportCustomerController::class,'user']);
+    Route::get("reports/customers/monthly-working-time-history", [ReportCustomerController::class,'history']);
+    Route::get("reports/customers/activities-tags", [ReportCustomerController::class,'tag']);
+
+    Route::get("reports/activities/list-activities", ActivityExportController::class);
 });

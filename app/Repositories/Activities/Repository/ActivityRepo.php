@@ -25,8 +25,9 @@ class ActivityRepo extends BaseRepository implements IActivity
     public function createActivity(array $params): Activity
     {
         $createdBy = [
-            'is_assign'     => $params['user_id'] !== Auth::id()
+            'is_assign'     => $params['user_id'] !== Auth::id(),
         ];
+
         $activity = $this->model->create($params + $createdBy);
 
         $this->saveHistory($activity,'Actividad creada');
@@ -74,21 +75,21 @@ class ActivityRepo extends BaseRepository implements IActivity
 
     public function listActivitiesToDashboard(string $from, string $to)
     {
-        return $this->model::with(['customer','user','tag','sub_activities','partials'])
+        return $this->model::with(['customer','user','tag'])
             ->whereCompanyId(companyID())
             ->whereDate('start_date','>=',$from)
             ->whereDate('due_date','<=',$to)
             ->get()->transform(function ($activity) {
                 return [
-                    'status'   => $activity->currentStatus(),
-                    'custId'   => $activity->customer_id,
-                    'custName' => $activity->customer->name,
-                    'usuId'   => $activity->user_id,
-                    'usuName' => $activity->user->full_name,
-                    'tagId'   => $activity->tag_id,
-                    'tagName' => $activity->tag->name,
-                    'timeEstimated' => $activity->estimatedTime(), //compare between customers
-                    'timeReal'      => $activity->totalTimeEntered($activity['sub_activities'],$activity['partials']), //compare between customers
+                    'status'         => $activity->currentStatus(),
+                    'custId'         => $activity->customer_id,
+                    'custName'       => $activity->customer->name,
+                    'usuId'          => $activity->user_id,
+                    'usuName'        => $activity->user->full_name,
+                    'tagId'          => $activity->tag_id,
+                    'tagName'        => $activity->tag->name,
+                    'timeEstimated'  => $activity->estimatedTime(), //compare between customers
+                    'timeReal'       => $activity->total_time_real, //compare between customers
                     'startDateMonth' => Carbon::parse($activity->start_date)->format('Y-m'), //history hours company
                     'startDate'      => Carbon::parse($activity->start_date)->format('Y-m-d'), //history hours company
                 ];
@@ -226,41 +227,4 @@ class ActivityRepo extends BaseRepository implements IActivity
             ->get();
     }
 
-    public function queryActivitiesReport(string $from, string $to)
-    {
-        $query = $this->model->with('customer','user','tag','sub_activities','partials')
-            ->whereDate('start_date','>=',$from)
-            ->whereDate('due_date','<=',$to)
-            ->orderBy('start_date')
-            ->get();
-
-        $keys = $query->modelKeys();
-
-        $activities = $query->transform(function ($activity) {
-                return $this->transformActivityReport($activity);
-            });
-
-        $sub = SubActivity::with('activity','activity.tag','activity.customer','activity.user')
-            ->whereIn('activity_id',$keys)
-            ->whereDate('completed_at','>=',$from)
-            ->whereDate('completed_at','<=',$to)
-            ->orderBy('completed_at')
-            ->get()
-            ->transform(function ($activity) {
-                return $this->transformSubActivityReport($activity);
-            });
-
-
-        $partials =  PartialActivity::with('activity','activity.tag','activity.customer','activity.user')
-            ->whereIn('activity_id',$keys)
-            ->whereDate('completed_at','>=',$from)
-            ->whereDate('completed_at','<=',$to)
-            ->orderBy('completed_at')
-            ->get()
-            ->transform(function ($activity) {
-                return $this->transformPartialActivityReport($activity);
-            });
-
-        return collect($activities)->merge(collect($sub))->merge($partials);
-    }
 }

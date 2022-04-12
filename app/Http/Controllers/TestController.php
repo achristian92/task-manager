@@ -9,6 +9,7 @@ use App\Repositories\Users\Repository\IUser;
 use App\Repositories\Users\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use DateTime;
 use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -27,23 +28,12 @@ class TestController extends Controller
 
     public function __invoke()
     {
+        $activities = Activity::all()->each(function ($activity){
+            $activity->total_time_real = $activity->time_real;
+            $activity->save();
+        });
 
-        $user = User::find(1);
-
-        $activities = $this->activityRepo->queryActivitiesReport('2022-04-01','2022-04-30')
-            ->where('userId',$user->id)
-            ->groupBy('customer')
-            ->transform(function ($activities, $customer) {
-                dd($activities);
-                return [
-                    'customer'           => $customer,
-                    'totalEstimatedTime' => sumTime(new DatabaseCollection($activities),'estimatedTime'),
-                    'totalRealTime'      => sumTime(new DatabaseCollection($activities),'realTime'),
-                    'activities'         => $activities
-                ];
-            })->values();
-
-        dd($activities);
+        dd("hecho");
 
 
     }

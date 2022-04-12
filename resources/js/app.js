@@ -70,10 +70,16 @@ Vue.component('user-imbox-basic', require('./components/users/imbox/GeneralTable
 Vue.component('report-users', require('./components/reports/users/Index').default);
 Vue.component('report-users-plannedvsreal', require('./components/reports/users/PlannedVsReal').default);
 Vue.component('report-users-totalhourscustomers', require('./components/reports/users/TotalHoursCustomers').default);
+Vue.component('report-users-totalhoursdays', require('./components/reports/users/TotalHoursDays').default);
 
 Vue.component('report-customers', require('./components/reports/customers/Index').default);
+Vue.component('report-customers-totalhoursdays', require('./components/reports/customers/TotalHoursDays').default);
+Vue.component('report-customers-listusers', require('./components/reports/customers/ListUsers').default);
+Vue.component('report-customers-history', require('./components/reports/customers/History').default);
+Vue.component('report-customers-tag', require('./components/reports/customers/ByTags').default);
 
 Vue.component('report-activities', require('./components/reports/activities/Index').default);
+Vue.component('report-activities-list', require('./components/reports/activities/List').default);
 
 
 

@@ -74,6 +74,7 @@ class ActivityController extends Controller
 
         return response()->json($data);
     }
+
     private function subActivities(Collection $subActivities): Collection
     {
         return $subActivities->transform(function ($subActivity) {
@@ -166,9 +167,13 @@ class ActivityController extends Controller
             'completed_at' => Carbon::now()
         ]);
 
+
         $this->activityRepo->saveHistory($activity,"Creó la subactividad $request->name con $request->duration");
 
         history(UserHistory::STORE,"Creó la subactividad $request->name",$sub);
+
+        $activity->total_time_real = sumArraysTime([$activity->total_time_real,$request->duration]);
+        $activity->save();
 
         return response()->json([
             'activity' => $this->transformActivityAdvance(Activity::find($id)),
@@ -181,6 +186,9 @@ class ActivityController extends Controller
         $sub = SubActivity::find($id);
 
         $activity = $sub->activity;
+
+        $activity->total_time_real = subtractArraysTime($activity->total_time_real,$sub->duration);
+        $activity->save();
 
         history(UserHistory::DELETE,"Eliminó la subactividad $sub->name",$sub);
         $sub->delete();
@@ -196,10 +204,11 @@ class ActivityController extends Controller
     public function new(ActivityRequest $request)
     {
         $request->merge([
-            'is_planned'     => false,
-            'user_id'        => \Auth::id(),
-            'status'         => Activity::TYPE_COMPLETED,
-            'completed_date' => Carbon::now()
+            'is_planned'      => false,
+            'user_id'         => \Auth::id(),
+            'status'          => Activity::TYPE_COMPLETED,
+            'total_time_real' => $request->input('time_real'),
+            'completed_date'  => Carbon::now()
         ]);
 
         $activity = $this->activityRepo->createActivity($request->all());

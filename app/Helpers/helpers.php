@@ -150,6 +150,22 @@ function sumArraysTime(array $times) {
     return sprintf('%02d:%02d', $hours, $minutes);
 }
 
+function subtractArraysTime(string $time, $subtime) {
+
+    list($hour, $minute) = explode(':', $time);
+    $totalminutes = $hour * 60 + $minute;
+
+    list($hour2, $minute2) = explode(':', $subtime);
+    $subminutes = $hour2 * 60 + $minute2;
+
+    $minutes = $totalminutes - $subminutes;
+
+    $hours = floor($minutes / 60);
+    $minutes -= $hours * 60;
+
+    return sprintf('%02d:%02d', $hours, $minutes);
+}
+
 function _formatTimeWorked(string $timeWorked): string
 {
     $cut = explode(':',$timeWorked);

@@ -62,6 +62,9 @@ class ActivityFinishedController extends Controller
 
         history(UserHistory::UPDATED,"$description - $activity->name",$activity);
 
+        $activity->total_time_real = sumArraysTime([$activity->total_time_real,$durationRequest]);
+        $activity->save();
+
         return response()->json([
             'msg'      => $description,
             'activity' => $this->transformActivityAdvance(Activity::find($id))

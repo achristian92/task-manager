@@ -98,9 +98,9 @@ class TotalHoursByCustomerExport implements FromCollection,WithHeadings,WithDraw
                     ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
 
                 $event->sheet->getDelegate()
-                    ->setCellValue("d$end",_sumTime($this->data->pluck('totalEstimatedTime')->toArray()));
+                    ->setCellValue("d$end",sumArraysTime($this->data->pluck('totalEstimatedTime')->toArray()));
                 $event->sheet->getDelegate()
-                    ->setCellValue("e$end",_sumTime($this->data->pluck('totalRealTime')->toArray()));
+                    ->setCellValue("e$end",sumArraysTime($this->data->pluck('totalRealTime')->toArray()));
                 /* Row Height */
                 $event->sheet->getDelegate()->getRowDimension(8)->setRowHeight(25);
                 $event->sheet->getDelegate()->getRowDimension(9)->setRowHeight(25);

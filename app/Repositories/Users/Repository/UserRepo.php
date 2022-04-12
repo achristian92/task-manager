@@ -4,16 +4,21 @@
 namespace App\Repositories\Users\Repository;
 
 use App\Mail\SendEmailNewUser;
+use App\Repositories\Activities\Transformations\ActivityTraitReport;
 use App\Repositories\Customers\Customer;
 use App\Repositories\Histories\UserHistory;
 use App\Repositories\Supervisors\Supervisor;
+use App\Repositories\Tools\DatesTrait;
 use App\Repositories\Users\User;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Prettus\Repository\Eloquent\BaseRepository;
 
 class UserRepo extends BaseRepository implements IUser
 {
+    use ActivityTraitReport, DatesTrait;
 
     public function model()
     {
@@ -125,5 +130,54 @@ class UserRepo extends BaseRepository implements IUser
                 ->orderBy($orderBy,$sortBy)
                 ->whereIsActive(true)
                 ->get($columns);
+    }
+
+    public function reportPlannedVsReal(int $user_id,string $from,string $to)
+    {
+        return $this->activitiesAllReport($from, $to, $user_id)
+            ->groupBy('customer')
+            ->map(function ($activities, $customer) {
+                return [
+                    'customer'           => $customer,
+                    'totalEstimatedTime' => sumTime($activities,'estimatedTime'),
+                    'totalRealTime'      =>sumTime($activities,'realTime'),
+                    'activities'         => $activities
+                ];
+            })->values();
+    }
+    public function reportTimeCustomer(int $counter_id,string $from,string $to)
+    {
+        $date = "$from / $to";
+
+        return $this->queryActivities($from,$to,$counter_id)
+            ->transform(function ($activity) {
+                return [
+                    'customer'      => $activity->customer->name,
+                    'estimatedTime' => $activity->estimatedTime(),
+                    'realTime'      => $activity->total_time_real,
+                ];
+            })
+            ->groupBy('customer')
+            ->map(function ($activities, $customer) use ($date) {
+                return [
+                    'date'               => $date,
+                    'customer'           => $customer,
+                    'totalEstimatedTime' => sumTime(collect($activities),'estimatedTime'),
+                    'totalRealTime'      => sumTime(collect($activities),'realTime')
+                ];
+            })->sortBy('customer')->values();
+    }
+
+    public function reportTimeCustomerDays(int $user_id,string $from,string $to, array $period)
+    {
+        return $this->activitiesAllReport($from, $to, $user_id)
+            ->groupBy('customer')
+            ->map(function ($activities, $customer) use ($period) {
+                return [
+                    'customer' => $customer,
+                    'dates' => $this->addTimeByDate($period,$activities),
+                    'total' => sumTime(collect($activities),'realTime')
+                ];
+            })->sortBy('customer')->values();
     }
 }

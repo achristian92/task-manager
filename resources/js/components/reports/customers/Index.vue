@@ -32,7 +32,7 @@
                     <a href="#" data-toggle="modal" data-target="#TagsModal">
                         <span class="text-muted h5">
                             <i class="fas fa-chevron-right mr-2"></i>
-                            Actividades por etiquetas <span class="text-success">(Nuevo)</span>
+                            Actividades por etiquetas <span class="text-success"></span>
                         </span>
                     </a>
                 </li>

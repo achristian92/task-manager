@@ -8,6 +8,8 @@ class MyReportController extends Controller
 {
     public function __invoke()
     {
-        //
+        return view('user.reports.index', [
+            'users' => [$this->currentUser()],
+        ]);
     }
 }

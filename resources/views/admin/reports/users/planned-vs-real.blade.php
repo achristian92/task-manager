@@ -25,7 +25,7 @@
         @foreach($customer['activities'] as $activity)
             <tr>
                 <td></td>
-                <td>{{$activity['startDate']}}</td>
+                <td>{{$activity['startDateFormat']}}</td>
                 <td>{{$activity['name']}} {{ !$activity['isPlanned'] ? '(Nuevo)' : ''  }} </td>
                 <td>{{$activity['estimatedTime']}}</td>
                 <td>{{$activity['realTime']}}</td>

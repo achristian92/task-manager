@@ -4,19 +4,21 @@
 namespace App\Repositories\Customers\Repository;
 
 use App\Repositories\Activities\Activity;
+use App\Repositories\Activities\Transformations\ActivityTraitReport;
 use App\Repositories\Customers\Customer;
 use App\Repositories\Histories\UserHistory;
 use App\Repositories\Tools\DatesTrait;
-use App\Repositories\Tools\TActivityReport;
 use App\Repositories\Tools\UploadableTrait;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use Illuminate\Support\Str;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use Prettus\Repository\Eloquent\BaseRepository;
 
 class CustomerRepo extends BaseRepository implements ICustomer
 {
-    use UploadableTrait, DatesTrait, TActivityReport;
+    use UploadableTrait, DatesTrait, ActivityTraitReport;
 
     public function model(): string
     {
@@ -77,9 +79,9 @@ class CustomerRepo extends BaseRepository implements ICustomer
             ->whereDate('due_date','<=',$months['toYmd'])
             ->get()->transform(function ($activity) {
                 return [
-                    'custId'    => $activity->customer_id,
-                    'custName'  => $activity->customer->name,
-                    'timeReal' => $activity->totalTimeEntered($activity['sub_activities'],$activity['partials']), //compare between customers
+                    'custId'   => $activity->customer_id,
+                    'custName' => $activity->customer->name,
+                    'timeReal' => $activity->total_time_real, //compare between customers
                     'month'    => Carbon::parse($activity->start_date)->format('Y-m')
                 ];
             });
@@ -106,5 +108,61 @@ class CustomerRepo extends BaseRepository implements ICustomer
         return collect($data)->map(function ($name) use ($text){
             return [ $text => $name];
         });
+    }
+
+    public function reportTimeCustomerDays(string $from,string $to, array $rangedays)
+    {
+        return $this->activitiesAllReport($from, $to)
+            ->groupBy('customer')
+            ->map(function ($activities, $customer) use ($rangedays) {
+                return [
+                    'customer'  => $customer,
+                    'total' => sumArraysTime($this->addTimeByDate($rangedays,$activities)),
+                    'dates' => $this->addTimeByDate($rangedays,$activities)
+                ];
+            })->sortBy('customer');
+    }
+
+    public function reportUserWorked(int $id,string $from,string $to, $rangedays)
+    {
+        return $this->activitiesAllReport($from,$to,null,$id)
+            ->groupBy('counter')
+            ->map(function ($activities, $counter) use ($rangedays) {
+                return [
+                    'counter' => $counter,
+                    'dates' => $this->addTimeByDate($rangedays,$activities),
+                    'total' => sumTime(collect($activities),'realTime')
+                ];
+            })->sortBy('counter')->values();
+    }
+
+    public function reportHistory(string $from, string $to)
+    {
+        return Activity::with(['customer'])
+            ->whereCompanyId(companyID())
+            ->whereDate('start_date','>=',$from)
+            ->whereDate('due_date','<=',$to)
+            ->get()
+            ->transform(function ($activity) {
+                return [
+                    'customerName' => $activity->customer->name,
+                    'totalRealTime' => $activity->total_time_real,
+                    'startDateMonth' => Carbon::parse($activity->start_date)->format('Y-m')
+                ];
+            });
+    }
+
+    public function reportactivityByTag(int $id, string $from, string $to)
+    {
+        return $this->activitiesAllReport($from, $to,null,$id)
+            ->groupBy('tag')
+            ->map(function ($activities, $tag) {
+                return [
+                    'tag'                => $tag,
+                    'totalEstimatedTime' => sumTime(collect($activities),'estimatedTime'),
+                    'totalRealTime'      => sumTime(collect($activities),'realTime'),
+                    'activities'         => $activities
+                ];
+            })->values();
     }
 }

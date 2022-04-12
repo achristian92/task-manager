@@ -93,6 +93,7 @@ class ActivityStatusController extends Controller
         $activity->update([
             'status'            => Activity::TYPE_APPROVED,
             'time_real'         => "00:00",
+            'total_time_real'   => "00:00",
             'is_partial'        => false,
             'with_subactivities'=> false,
             'completed_date'    => null

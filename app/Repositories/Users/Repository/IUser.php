@@ -22,4 +22,6 @@ interface IUser
     public function listAssignedUsers(User $user, string $orderBy = 'name', string $sortBy = 'asc', array $columns = ['*']);
 
     public function listCustomers(User $user, $orderBy = 'name', string $sortBy = 'asc', array $columns = ['*']);
+
+
 }

@@ -14,12 +14,12 @@
 
     <report-users-plannedvsreal :c_users="{{json_encode($users)}}"></report-users-plannedvsreal>
     <report-users-totalhourscustomers :c_users="{{json_encode($users)}}"></report-users-totalhourscustomers>
-{{--    <report-users-time-worked-by-day-component :c_users="{{json_encode($users)}}"></report-users-time-worked-by-day-component>--}}
+    <report-users-totalhoursdays :c_users="{{json_encode($users)}}"></report-users-totalhoursdays>
 
-{{--    <report-customers-time-worked-by-month-component></report-customers-time-worked-by-month-component>--}}
-{{--    <report-customers-list-users-working-component :c_customers="{{json_encode($customers)}}"></report-customers-list-users-working-component>--}}
-{{--    <report-customers-history-last-six-months-component></report-customers-history-last-six-months-component>--}}
-{{--    <report-tags :c_customers="{{json_encode($customers)}}"></report-tags>--}}
+    <report-customers-totalhoursdays></report-customers-totalhoursdays>
+    <report-customers-listusers :c_customers="{{json_encode($customers)}}"></report-customers-listusers>
+    <report-customers-history></report-customers-history>
+    <report-customers-tag :c_customers="{{json_encode($customers)}}"></report-customers-tag>
 
-{{--    <report-activities-list-activities-component></report-activities-list-activities-component>--}}
+    <report-activities-list></report-activities-list>
 @endsection
