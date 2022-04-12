@@ -3,7 +3,8 @@
 namespace App\Console;
 
 use App\Console\Commands\ActivitiesDeadline;
-use App\Console\Commands\ActivitiesNotLoadedByCounters;
+use App\Console\Commands\ActivitiesNotFinished;
+use App\Console\Commands\ActivityEvaluation;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,13 +16,25 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-
+        ActivitiesDeadline::class,
+        ActivitiesNotFinished::class,
+        ActivityEvaluation::class,
     ];
 
 
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('deadline:activities')
+            ->dailyAt('02:04')
+            ->emailOutputOnFailure('alan.ruiz@brainbox.pe');
 
+        $schedule->command('notfinished:activities')
+            ->dailyAt('02:06')
+            ->emailOutputOnFailure('alan.ruiz@brainbox.pe');
+
+        $schedule->command('evaluation:activities')
+            ->dailyAt('02:14')
+            ->emailOutputOnFailure('alan.ruiz@brainbox.pe');
     }
 
     /**

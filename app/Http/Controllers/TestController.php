@@ -2,8 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Activities\DeadlineAdminMail;
+use App\Mail\Activities\DeadlineUserMail;
+use App\Mail\Activities\EvaluationMail;
+use App\Mail\Activities\NotFinishedMail;
+use App\Mail\SendEmailActivitiesDeadline;
+use App\Mail\SendEmailActivitiesDeadlineAdmin;
+use App\Mail\SendEmailAlertActivitiesNotLoaded;
 use App\Repositories\Activities\Activity;
 use App\Repositories\Activities\Repository\IActivity;
+use App\Repositories\Activities\Transformations\ActivityTrait;
+use App\Repositories\Companies\Company;
 use App\Repositories\Customers\Customer;
 use App\Repositories\Users\Repository\IUser;
 use App\Repositories\Users\User;
@@ -13,10 +22,13 @@ use DateTime;
 use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class TestController extends Controller
 {
+    use ActivityTrait;
+
     private $userRepo;
     private IActivity $activityRepo;
 
@@ -28,68 +40,47 @@ class TestController extends Controller
 
     public function __invoke()
     {
-        $activities = Activity::all()->each(function ($activity){
-            $activity->total_time_real = $activity->time_real;
-            $activity->save();
-        });
-
-        dd("hecho");
-
-
-    }
-
-
-    private function tagHours($fromMonth,int $sub = 6)
-    {
-        $startDate = '2022-03-01';
-        $endDate = '2022-03-31';
-
-        $from = Carbon::parse('2022-03-01')->subMonths(6)->format('Y-m-d');
-        $to =  CarbonPeriod::create($from, '1 month', $endDate);
-
-        $rangeMonth = [];
-        $rangeMonthName = [];
-        foreach ($to as $month) {
-            $rangeMonth[] = $month->format("Y-m");
-            $rangeMonthName[] = ucfirst($month->monthName);
-        }
-
-
-        $activities = Activity::with(['tag'])
-            ->whereCompanyId(1)
-            ->whereDate('start_date','>=',$from)
-            ->whereDate('due_date','<=',$endDate)
-            ->get()->transform(function ($activity) {
+        $activities = Activity::with('user')
+            ->whereDate('start_date',Carbon::yesterday()->format('Y-m-d'))
+            ->where('different_completed_date',true)
+            ->whereNull('approved_change_date_by')
+            ->latest()
+            ->get()
+            ->transform(function (Activity $activity) {
                 return [
-                    'tagId'    => $activity->tag_id,
-                    'tagName'  => $activity->tag->name,
-                    'timeReal' => $activity->time_real,
-                    'month'    => Carbon::parse($activity->start_date)->format('Y-m')
+                    'userName' => $activity->user->full_name,
+                    'companyId' => $activity->company_id,
                 ];
+            })->groupBy('userName')->transform(function ($activities, $user) {
+                return [
+                    'user' => $user,
+                    'companyId' => $activities[0]['companyId'],
+                    'qty'  => $activities->count(),
+                ];
+            })->groupBy('companyId')->transform(function ($data, $company_id) {
+                $company = Company::find($company_id);
+                if (!empty($data)) {
+                    self::listUsers($company_id)->each(function ($user) use($data) {
+                        Mail::to($user->email)
+                            ->send(new EvaluationMail($user, $data->ToArray()));
+                    });
+                }
             });
 
-       $dataset = $activities->groupBy('tagName')->map(function ($activities, $tag) use ( $rangeMonthName, $rangeMonth ) {
-            foreach ($rangeMonth as $month) {
-                list($hour, $minute) = explode(':', $this->sumTime($activities->where('month',$month),'timeReal'));
-                $hours[] = $hour;
-            }
-            return [
-                'seriesname' => Str::limit($tag, 15),
-                'data' => $this->transformDataSource($hours,'value'),
-            ];
-        })->values();
+        dd($activities);
+    }
 
-        return [
-            'categories' => $this->transformDataSource($rangeMonthName,'label'),
-            'dataset' => $dataset
-        ];
-    }
-    private function transformDataSource(array $data, string $text)
+    public function listUsers($company_id)
     {
-        return collect($data)->map(function ($name) use ($text){
-            return [ $text => $name];
-        });
+        return User::with('roles')
+            ->whereCompanyId($company_id)
+            ->orderBy('name')
+            ->get()
+            ->filter(function (User $user){
+                return $user->hasRole('Admin');
+            });
     }
+
 
 
 

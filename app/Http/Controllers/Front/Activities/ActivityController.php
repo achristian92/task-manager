@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Front\Activities;
 
 use App\Http\Controllers\Controller;
-use App\Mail\SendEmailActivityAssigned;
+use App\Mail\SendEmailActivitiesDeadline;
 use App\Repositories\Activities\Activity;
 use App\Repositories\Activities\Repository\IActivity;
 use App\Repositories\Activities\Requests\ActivityMassApproveRequest;
