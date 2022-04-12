@@ -81,7 +81,14 @@ class TestController extends Controller
             });
     }
 
-
+    public function totalrealtime()
+    {
+        Activity::orderBy('start_date','desc')->get()
+            ->each(function ($activity) {
+                $activity->total_time_real = $activity->time_real;
+                $activity->save();
+            });
+    }
 
 
 }

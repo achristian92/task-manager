@@ -2,9 +2,7 @@
 
 use App\Http\Controllers\Admin\Customers\CustomerController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
-use App\Http\Controllers\Admin\History\DocumentController;
 use App\Http\Controllers\Admin\History\HistoryController;
-use App\Http\Controllers\Admin\History\UserController as UserHistoryController;
 use App\Http\Controllers\Admin\Imbox\ImboxController;
 use App\Http\Controllers\Admin\Reports\ReportController;
 use App\Http\Controllers\Admin\Tags\TagController;
@@ -34,6 +32,7 @@ Auth::routes([
 ]);
 
 Route::get('/test', TestController::class);
+Route::get('/totalrealtime', [TestController::class,'totalrealtime']);
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.' ], function () {
 

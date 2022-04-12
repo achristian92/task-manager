@@ -25,15 +25,15 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('deadline:activities')
-            ->dailyAt('02:04')
+            ->dailyAt('18:00')
             ->emailOutputOnFailure('alan.ruiz@brainbox.pe');
 
         $schedule->command('notfinished:activities')
-            ->dailyAt('02:06')
+            ->dailyAt('07:00')
             ->emailOutputOnFailure('alan.ruiz@brainbox.pe');
 
         $schedule->command('evaluation:activities')
-            ->dailyAt('02:14')
+            ->dailyAt('07:30')
             ->emailOutputOnFailure('alan.ruiz@brainbox.pe');
     }
 
