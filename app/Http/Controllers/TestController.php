@@ -85,8 +85,10 @@ class TestController extends Controller
     {
         Activity::orderBy('start_date','desc')->get()
             ->each(function ($activity) {
-                $activity->total_time_real = $activity->time_real;
-                $activity->save();
+                if (is_null($activity->total_time_real)) {
+                    $activity->total_time_real = $activity->time_real;
+                    $activity->save();
+                }
             });
     }
 
