@@ -55,10 +55,10 @@ class LoginController extends Controller
             $this->sendLoginResponse($request);
 
             history(UserHistory::SESSION,'Ingresó al sistema');
+            Auth::user()->update(['last_login' => now()]);
 
-            if (Auth::user()->hasAnyRole('Admin','Supervisor')) {
+            if (Auth::user()->hasAnyRole('Admin','Supervisor'))
                 return redirect($this->redirectTo);
-            }
 
             return redirect($this->redirectToCollaborator);
         }

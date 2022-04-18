@@ -12,13 +12,9 @@
                     <form class="form" @submit.prevent="handleExport">
                         <div class="form-group">
                             <label for="customer_day" class="form-control-label">Cliente</label>
-                            <select class="form-control form-control-sm"
-                                    id="customer_day"
-                                    v-model="customer_id"
-                                    required>
-                                <option value="" :disable="true">Seleccionar...</option>
-                                <option v-for="customer in customers" :value="customer.id">{{customer.name}}</option>
-                            </select>
+                            <Select2 v-model="customer_id"
+                                     :options="customers"
+                                     placeholder="Seleccionar" required />
                             <div v-if="errors && errors.customer_id" class="h6 text-danger">{{ errors.customer_id[0] }}</div>
                         </div>
                         <div class="row">
@@ -55,10 +51,12 @@ import axios from 'axios'
 import moment from 'moment'
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+import Select2 from 'v-select2-component';
 
 export default {
     components: {
-        Loading
+        Loading,
+        Select2
     },
     data() {
         return {
@@ -69,9 +67,9 @@ export default {
             errors       : []
         }
     },
-    props: ['c_customers'],
+    props: ['p_customers'],
     created() {
-        if (this.c_customers) this.customers = this.c_customers;
+        if (this.p_customers) this.customers = this.p_customers;
     },
     methods: {
         handleExport: function () {

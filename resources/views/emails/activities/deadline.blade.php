@@ -15,9 +15,9 @@
                             @foreach($data['activities'] as $activity)
                                 <li>
                                     {{$activity['activity']}} <br>
-                                    <span style="font-weight:200; font-size: 12px;">
-                                        Cliente: {{ $activity['customer'] }} |
-                                        Tiempo: {{ $activity['time'] }}
+                                    <span style="font-weight:200; font-size: 10px;">
+                                        Cliente: {{ $activity['customer'] }}
+{{--                                        Tiempo: {{ $activity['time'] }}--}}
                                     </span>
                                 </li>
                             @endforeach

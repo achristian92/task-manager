@@ -6,7 +6,6 @@ use App\Http\Controllers\Front\Activities\ActivityFinishedController;
 use App\Http\Controllers\Front\Activities\ActivityStatusController;
 use App\Http\Controllers\Front\Reports\Activities\ActivityExportController;
 use App\Http\Controllers\Front\Reports\Customers\ReportCustomerController;
-use App\Http\Controllers\Front\Reports\Users\ReportPlannedVsRealController;
 use App\Http\Controllers\Front\Reports\Users\ReportUserController;
 use App\Http\Controllers\Front\Reports\Users\ReportWorkplanController;
 use App\Http\Controllers\Front\Tags\TagController;

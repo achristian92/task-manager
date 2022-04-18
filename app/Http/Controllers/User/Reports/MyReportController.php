@@ -8,8 +8,15 @@ class MyReportController extends Controller
 {
     public function __invoke()
     {
+        $user = \Auth::user();
+        $users = [
+            [
+                'id' => $user->id,
+                'text' => $user->full_name
+            ]
+        ];
         return view('user.reports.index', [
-            'users' => [$this->currentUser()],
+            'users' => $users,
         ]);
     }
 }

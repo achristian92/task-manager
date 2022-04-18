@@ -6,7 +6,7 @@
         </div>
     </div>
 
-    <report-users-plannedvsreal :c_users="{{json_encode($users)}}"></report-users-plannedvsreal>
-    <report-users-totalhourscustomers :c_users="{{json_encode($users)}}"></report-users-totalhourscustomers>
-    <report-users-totalhoursdays :c_users="{{json_encode($users)}}"></report-users-totalhoursdays>
+    <report-users-plannedvsreal :p_users="{{json_encode($users)}}"></report-users-plannedvsreal>
+    <report-users-totalhourscustomers :p_users="{{json_encode($users)}}"></report-users-totalhourscustomers>
+    <report-users-totalhoursdays :p_users="{{json_encode($users)}}"></report-users-totalhoursdays>
 @endsection

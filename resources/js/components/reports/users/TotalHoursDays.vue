@@ -1,5 +1,5 @@
 <template>
-    <div class="modal fade" id="TimeWorkedByDayModal" tabindex="-1" role="dialog" aria-labelledby="edit-event-label" aria-hidden="true">
+    <div class="modal fade" id="TimeWorkedByDayModal" role="dialog" aria-labelledby="edit-event-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <loading :active.sync="isLoading" :is-full-page="false"></loading>
@@ -12,13 +12,10 @@
                     <form class="form" @submit.prevent="handleExport">
                         <div class="form-group">
                             <label for="userTimeWorkedByDay" class="form-control-label">Usuario</label>
-                            <select class="form-control form-control-sm"
-                                    id="userTimeWorkedByDay"
-                                    v-model="user_id"
-                                    required>
-                                <option value="" :disable="true">Seleccionar...</option>
-                                <option v-for="user in users" :value="user.id">{{user.full_name}}</option>
-                            </select>
+                            <Select2 v-model="user_id"
+                                     :options="users"
+                                     placeholder="Seleccionar"
+                                     required />
                             <div v-if="errors && errors.user_id" class="h6 text-danger">{{ errors.user_id[0] }}</div>
                         </div>
                         <div class="row">
@@ -55,10 +52,12 @@ import axios from 'axios'
 import moment from 'moment'
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+import Select2 from 'v-select2-component';
 
 export default {
     components: {
-        Loading
+        Loading,
+        Select2
     },
     data() {
         return {
@@ -69,9 +68,9 @@ export default {
             errors       : []
         }
     },
-    props: ['c_users'],
+    props: ['p_users'],
     created() {
-        if (this.c_users) this.users = this.c_users;
+        if (this.p_users) this.users = this.p_users;
         if (this.users.length === 1) this.user_id = this.users[0].id;
     },
     methods: {

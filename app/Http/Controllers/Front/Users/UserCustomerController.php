@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Front\Users;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\Customers\CustomerTransformable;
 use App\Repositories\Users\Repository\IUser;
 use App\Repositories\Users\User;
 
 class UserCustomerController extends Controller
 {
+    use CustomerTransformable;
+
     private $userRepo;
 
     public function __construct(IUser $IUser)
@@ -19,10 +22,7 @@ class UserCustomerController extends Controller
     {
         $customers = $this->userRepo->listCustomers($user)
             ->transform(function ($customer) {
-            return [
-                'id'   => $customer->id,
-                'text' => $customer->name,
-            ];
+                return $this->trasformCustomerToSelect2($customer);
         });
 
         return response()->json([
