@@ -38,10 +38,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.' ],
 
     Route::get('dashboard', DashboardController::class)->name('dashboard.index');
 
-    Route::resource('customers', CustomerController::class);
-    Route::get('customers-export', [CustomerController::class,'export'])->name('customers.export');
-    Route::post('customers-import', [CustomerController::class,'import'])->name('customers.import');
+    Route::get('tags', TagController::class)->name('tags.index');
 
+    Route::get('workplans', WorkPlanController::class)->name('workplans.index');
+
+    Route::get('imbox', ImboxController::class)->name('imbox.index');
+
+    Route::get('reports', ReportController::class)->name('reports.index');
+});
+
+
+Route::group(['prefix' => 'admin', 'middleware' => ['auth','check.users'], 'as' => 'admin.' ], function () {
     Route::resource('users', UserController::class);
     Route::get('users-export', [UserController::class,'export'])->name('users.export');
     Route::get('users/{user}/history', [UserController::class,'history'])->name('users.history');
@@ -49,21 +56,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.' ],
     Route::get('users/{user}/enable',[UserActionController::class,'enable'])->name('users.enable');
     Route::get('users/{user}/disable',[UserActionController::class,'disable'])->name('users.disable');
     Route::get('users/{user}/send-credentials',[UserActionController::class,'sendCredentials'])->name('users.credentials');
-
-    Route::get('tags', TagController::class)->name('tags.index');
-
-    Route::get('workplans', WorkPlanController::class)->name('workplans.index');
-
-    Route::get('imbox', ImboxController::class)->name('imbox.index');
-
     Route::resource('tracks', TrackController::class)->only('index','show');
-
-    Route::get('reports', ReportController::class)->name('reports.index');
-
     Route::get('histories', [HistoryController::class,'history'])->name('history.index');
-
     Route::get('documents', [HistoryController::class,'document'])->name('documents.index');
+});
 
+Route::group(['prefix' => 'admin', 'middleware' => ['auth','check.customers'], 'as' => 'admin.' ], function () {
+    Route::resource('customers', CustomerController::class);
+    Route::get('customers-export', [CustomerController::class,'export'])->name('customers.export');
+    Route::post('customers-import', [CustomerController::class,'import'])->name('customers.import');
 });
 
 Route::group(['prefix' => 'user', 'middleware' => ['auth'], 'as' => 'user.' ], function () {

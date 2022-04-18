@@ -14,6 +14,9 @@ class ProfileController extends Controller
 
     public function edit(User $profile)
     {
+        if ($profile->id !== \Auth::id())
+            abort(404);
+
         return view('setting.profiles.edit',[
             'model' => $profile
         ]);

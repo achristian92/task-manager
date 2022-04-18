@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Setting\Companies;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Repositories\Companies\Company;
 use App\Repositories\Companies\Requests\CompanyRequest;
 use App\Repositories\Histories\UserHistory;
@@ -15,6 +14,9 @@ class CompanyController extends Controller
 
     public function edit(Company $company)
     {
+        if ($company->id !== \Auth::user()->company_id)
+            abort(404);
+
         return view('setting.companies.edit',[
             'model' => $company
         ]);

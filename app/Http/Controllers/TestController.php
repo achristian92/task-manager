@@ -37,6 +37,14 @@ class TestController extends Controller
 
     public function __invoke()
     {
+      $users = $this->userRepo->listUsers()->modelKeys();
+      $user_id = "9";
+      dd(in_array($user_id,$users));
+      dd($users);
+    }
+
+    private function users()
+    {
         $users = User::all()->map(function ($user) {
             $new_email = Str::replace('jga.pe', 'test.com', $user->email);
             $user->update(['email' => $new_email]);

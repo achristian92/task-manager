@@ -7,6 +7,8 @@ use App\Http\Middleware\CheckAuthAdminOrSupervisor;
 use App\Http\Middleware\CheckUrlSidebarAdminSuper;
 use App\Http\Middleware\CheckUrlSidebarCounter;
 use App\Http\Middleware\Counter\Authenticate;
+use App\Http\Middleware\IsValidCustomer;
+use App\Http\Middleware\IsValidUser;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -68,5 +70,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'check.users' => IsValidUser::class,
+        'check.customers' => IsValidCustomer::class
     ];
 }

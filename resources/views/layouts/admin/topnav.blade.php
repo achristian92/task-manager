@@ -99,7 +99,7 @@
                             <i class="ni ni-single-02"></i>
                             <span>Mi cuenta</span>
                         </a>
-                        @if($userCurrent->hasRole('admin'))
+                        @if($userCurrent->isAdmin())
                             <a href="{{ route('setting.company.edit',$userCurrent->company_id) }}" class="dropdown-item">
                                 <i class="ni ni-settings"></i>
                                 <span>Empresa</span>
