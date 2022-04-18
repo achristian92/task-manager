@@ -49,16 +49,16 @@
                             </button>
                         </form>
                     @endunless
-                    @if ($userv2->isAdmin())
-                        <a class="dropdown-item" href="{{ route('admin.users.document',$user->id) }}">
-                            <i class="ni ni-folder-17 text-primary"></i>
-                            <span>Documentos</span>
-                        </a>
-                        <a class="dropdown-item" href="{{ route('admin.users.history',$user->id) }}">
-                            <i class="ni ni-collection text-primary"></i>
-                            <span>Historial</span>
-                        </a>
-                    @endif
+{{--                    @if ($userv2->isAdmin())--}}
+{{--                        <a class="dropdown-item" href="{{ route('admin.users.document',$user->id) }}">--}}
+{{--                            <i class="ni ni-folder-17 text-primary"></i>--}}
+{{--                            <span>Documentos</span>--}}
+{{--                        </a>--}}
+{{--                        <a class="dropdown-item" href="{{ route('admin.users.history',$user->id) }}">--}}
+{{--                            <i class="ni ni-collection text-primary"></i>--}}
+{{--                            <span>Historial</span>--}}
+{{--                        </a>--}}
+{{--                    @endif--}}
                 </div>
             </div>
         </td>

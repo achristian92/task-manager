@@ -222,5 +222,15 @@ class ActivityController extends Controller
         ],201);
     }
 
+    public function destroy(int $id)
+    {
+        $this->activityRepo->deleteActivity($id);
+
+        return response()->json([
+            'view' => request()->input('view','calendar'),
+            'msg' => "Actividad eliminada"
+        ]);
+    }
+
 
 }

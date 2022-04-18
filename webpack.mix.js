@@ -21,7 +21,7 @@ mix.scripts([
 
 mix.js('resources/js/argon.js', 'public/js/argon.js')
     .browserSync({
-        proxy: "http://task-manager-saas.test",
+        proxy: "http://task-manager.test",
         browser: "Microsoft Edge",
         open: false
     });

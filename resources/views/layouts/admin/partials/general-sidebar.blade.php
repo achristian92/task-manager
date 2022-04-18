@@ -51,17 +51,17 @@
         <span class="nav-link-text">Reportes</span>
     </a>
 </li>
-@if ($userCurrent->isAdmin())
-    <li class="nav-item">
-        <a class="nav-link {{isActiveRoute(2,"documents")}}" href="{{route('admin.documents.index')}}">
-            <img src="{{ asset('img/icons/Documentos.png') }}" class="mr-2" width="16px" alt="customers" >
-            <span class="nav-link-text">Documentos</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link {{isActiveRoute(2,"histories")}}" href="{{route('admin.history.index')}}">
-            <img src="{{ asset('img/icons/Historial.png') }}" class="mr-2" width="16px" alt="customers" >
-            <span class="nav-link-text">Historial</span>
-        </a>
-    </li>
-@endif
+{{--@if ($userCurrent->isAdmin())--}}
+{{--    <li class="nav-item">--}}
+{{--        <a class="nav-link {{isActiveRoute(2,"documents")}}" href="{{route('admin.documents.index')}}">--}}
+{{--            <img src="{{ asset('img/icons/Documentos.png') }}" class="mr-2" width="16px" alt="customers" >--}}
+{{--            <span class="nav-link-text">Documentos</span>--}}
+{{--        </a>--}}
+{{--    </li>--}}
+{{--    <li class="nav-item">--}}
+{{--        <a class="nav-link {{isActiveRoute(2,"histories")}}" href="{{route('admin.history.index')}}">--}}
+{{--            <img src="{{ asset('img/icons/Historial.png') }}" class="mr-2" width="16px" alt="customers" >--}}
+{{--            <span class="nav-link-text">Historial</span>--}}
+{{--        </a>--}}
+{{--    </li>--}}
+{{--@endif--}}

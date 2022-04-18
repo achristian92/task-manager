@@ -985,7 +985,7 @@ var Scrollbar = function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/aruiz/Sites/brainbox/task-manager-saas/resources/js/argon.js */"./resources/js/argon.js");
+module.exports = __webpack_require__(/*! /Users/aruiz/Sites/brainbox/task-manager/resources/js/argon.js */"./resources/js/argon.js");
 
 
 /***/ })

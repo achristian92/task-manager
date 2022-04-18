@@ -356,7 +356,6 @@ export default{
         handleMassApprove (e) {
             e.preventDefault();
             this.isLoading = true
-            console.log("entroooo")
             axios.post(`${this.appUrl}api/activities/mass-approve`, {
                 yearAndMonth : this.yearAndMonth,
                 user_id      : this.userIDFilter,

@@ -82,7 +82,6 @@ export default {
     },
     methods: {
         refreshEventsOwn() {
-            console.log(this.yearAndMonth)
             //Vue.$toast.success("Actualizando información...");
             this.isLoading = true;
             axios
@@ -113,7 +112,6 @@ export default {
         },
 
         handleChangeMonth(date) {
-            console.log(date)
             this.month = parseInt(moment(date.dateFormat).format('MM'));
             this.year = parseInt(moment(date.dateFormat).format('Y'));
 
