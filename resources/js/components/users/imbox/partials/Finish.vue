@@ -89,7 +89,7 @@ export default {
             name        : null,
             estimated   : null,
             duration    : null,
-            remaining   : null,
+            remaining   : '',
             date        : moment().format("YYYY-MM-DD"),
             activityID  : null,
             isPartial   : false,
@@ -105,7 +105,7 @@ export default {
             this.name        = data.activity
             this.estimated   = data.estimatedTime
             this.duration    = data.realTime
-            this.remaining   = '00:00'
+            this.remaining   = ''
             this.date        = moment().format("YYYY-MM-DD")
             this.isPartial   = false
             this.isCompleted = data.currentStatus === 'completed'
@@ -115,7 +115,7 @@ export default {
     methods: {
         save: function () {
             if (!this.isValidTimeEstimated(this.remaining) || this.remaining === '00:00') {
-                Vue.$toast.warning('¿Tiempo incorrecto');
+                Vue.$toast.warning('Tiempo incorrecto (usar HH:MM)');
                 return;
             }
 

@@ -10,13 +10,6 @@
                             <Select2 v-model="activity.customer_id"
                                      :options="customers"
                                      placeholder="Seleccionar..." required/>
-                            <!--                            <select class="form-control form-control-sm"-->
-                            <!--                                    id="customer"-->
-                            <!--                                    v-model="activity.customer_id"-->
-                            <!--                                    required>-->
-                            <!--                                <option value="" :disable="true">Seleccionar...</option>-->
-                            <!--                                <option v-for="customer in p_customers" :value="customer.id">{{customer.name}}</option>-->
-                            <!--                            </select>-->
                             <div v-if="errors && errors.customer_id" class="h6 text-danger">{{ errors.customer_id[0] }}</div>
                         </div>
                         <div class="row">
@@ -50,12 +43,6 @@
                             <Select2 v-model="activity.tag_id"
                                      :options="tags"
                                      placeholder="Seleccionar..." required/>
-                            <!--                            <select class="form-control form-control-sm"-->
-                            <!--                                    id="tag"-->
-                            <!--                                    v-model="activity.tag_id">-->
-                            <!--                                <option value="">Seleccionar...</option>-->
-                            <!--                                <option v-for="tag in p_tags" :value="tag.id">{{tag.name}}</option>-->
-                            <!--                            </select>-->
                             <div v-if="errors && errors.tag_id" class="h6 text-danger">{{ errors.tag_id[0] }}</div>
                         </div>
                         <div  v-show="showMore">
