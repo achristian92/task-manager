@@ -10,6 +10,7 @@ class CompanySeeder extends Seeder
     public function run() {
         Company::create([
             'name'         => 'JGA CONSULTORES',
+            'ruc'          => '20602987532',
             'address'      => 'AVENIDA MARISCAL LA MAR, 662 OFICINA 404 - MIRAFLORES',
             'telephone'    => '(511) 491-5250',
             'email'        => 'INFOPERU@JGA.PE',

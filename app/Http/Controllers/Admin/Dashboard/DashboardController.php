@@ -34,7 +34,6 @@ class DashboardController extends Controller
         $customersHours = $this->totalHours($activities,'customer',$qtyShow);
         $usersHours = $this->totalHours($activities,'user',$qtyShow);
 
-
         return view('admin.dashboard.index',[
             'progress'      => $this->activityRepo->progress($activities),
             'resume'        => $this->activityRepo->resume($activities),

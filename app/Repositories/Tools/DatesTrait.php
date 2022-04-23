@@ -42,7 +42,7 @@ trait DatesTrait
     public function subMonths($fromMonth ,$sub = 6)
     {
         $from = Carbon::createFromDate($fromMonth)->startOfMonth();
-        $end = $from->endOfMonth()->format('Y-m-d');
+        $end = Carbon::createFromDate($fromMonth)->endOfMonth();
         $substart = $from->subMonths(6)->format('Y-m-d');
         $period = CarbonPeriod::create($substart, '1 month', $end);
         $rangeMonth = [];
@@ -51,7 +51,6 @@ trait DatesTrait
             $rangeMonth[] = $month->format("Y-m");
             $rangeMonthName[] = ucfirst($month->monthName);
         }
-
 
         return [
             'fromYmd'  => $substart,

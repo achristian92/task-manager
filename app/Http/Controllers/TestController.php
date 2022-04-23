@@ -16,6 +16,7 @@ use App\Repositories\Users\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use DateTime;
+use DB;
 use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -37,11 +38,19 @@ class TestController extends Controller
 
     public function __invoke()
     {
-      $users = $this->userRepo->listUsers()->modelKeys();
-      $user_id = "9";
-      dd(in_array($user_id,$users));
-      dd($users);
+        $start = request()->startdate;
+        $end = request()->duedate;
+        
+        Activity::whereDate('start_date','>=',$start)
+            ->whereDate('start_date','<=',$end)
+            ->get()
+            ->each(function ($activity) {
+                $activity->total_time_real = $activity->time_real;
+                $activity->save();
+            });
+        dd("$start - $end");
     }
+
 
     private function users()
     {
