@@ -40,7 +40,7 @@ class TestController extends Controller
     {
         $start = request()->startdate;
         $end = request()->duedate;
-        
+
         Activity::whereDate('start_date','>=',$start)
             ->whereDate('start_date','<=',$end)
             ->get()
