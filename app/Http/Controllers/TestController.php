@@ -38,17 +38,38 @@ class TestController extends Controller
 
     public function __invoke()
     {
-        $start = request()->startdate;
-        $end = request()->duedate;
+        $company = request()->input('company');
+        if (!$company)
+            dd("falta company");
 
-        Activity::whereDate('start_date','>=',$start)
-            ->whereDate('start_date','<=',$end)
-            ->get()
-            ->each(function ($activity) {
-                $activity->total_time_real = $activity->time_real;
-                $activity->save();
-            });
-        dd("$start - $end");
+
+        DB::table('activities')->where('company_id',$company)
+            ->orderBy('created_at','desc')
+            ->chunk(500, function($activties)
+        {
+            foreach ($activties as $activity)
+            {
+                $update = DB::table('activities')
+                    ->where('id', $activity->id)
+                    ->limit(1)
+                    ->update([ 'created_by_id' => $activity->user_id]);
+            }
+        });
+
+
+        dd("terminado");
+
+//        $start = request()->startdate;
+//        $end = request()->duedate;
+//
+//        Activity::whereDate('start_date','>=',$start)
+//            ->whereDate('start_date','<=',$end)
+//            ->get()
+//            ->each(function ($activity) {
+//                $activity->total_time_real = $activity->time_real;
+//                $activity->save();
+//            });
+//        dd("$start - $end");
     }
 
 
