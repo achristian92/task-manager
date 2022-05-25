@@ -32,7 +32,7 @@ class WorkplanImport implements ToCollection,WithValidation,WithHeadingRow
                         'start_date'    => $this->transformDate($row['fecha']),
                         'customer_id'   => $row['id_cliente'],
                         'user_id'       => $this->user->id,
-                        'name'          => ucfirst(strtolower($row['actividad'])),
+                        'name'          => $row['actividad'],
                         'time_estimate' =>  $this->transformDate($row['horas'],'H:i'),
                         'tag_id'        => $row['id_etiqueta'],
                         'description'   => $row['descripcion'],
