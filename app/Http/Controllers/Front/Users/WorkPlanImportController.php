@@ -9,7 +9,6 @@ use App\Imports\WorkplanImport;
 use App\Repositories\Activities\Activity;
 use App\Repositories\Activities\Repository\IActivity;
 use App\Repositories\Activities\Requests\ActivityDuplicateRequest;
-use App\Repositories\Activities\Requests\StoreDuplicatePlannedRequest;
 use App\Repositories\Histories\UserHistory;
 use App\Repositories\Tools\DatesTrait;
 use App\Repositories\Tools\UploadableTrait;
@@ -41,7 +40,7 @@ class WorkPlanImportController extends Controller
     {
         history(UserHistory::EXPORT,"Exportó plantilla para importar plan");
 
-        return Excel::download(new TemplateExport(), 'Plantill-Plan-Trabajo.xlsx');
+        return Excel::download(new TemplateExport(), 'Plantilla-Plan-Trabajo.xlsx');
 
     }
 
@@ -61,6 +60,7 @@ class WorkPlanImportController extends Controller
 
         docHistory(UserHistory::IMPORT,"Importó plan de trabajo",$url);
         history(UserHistory::IMPORT,"Importó plan de trabajo - $url");
+
 
         Excel::import(new WorkplanImport(Auth::user()), $request->file('file_upload'));
 

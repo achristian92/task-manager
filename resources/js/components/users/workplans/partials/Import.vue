@@ -21,7 +21,7 @@
                     </div>
                     <br><br>
                     <div class="alert alert-secondary">
-                        Descargar información de clientes y etiquetas
+                        Descargar matriz de clientes y etiquetas
                         <a href="" @click="downloadMatriz">Click aqui!</a>
                     </div>
                     <div class="alert alert-secondary">

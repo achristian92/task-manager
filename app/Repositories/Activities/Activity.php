@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Activities;
 
-use App\Mail\SendEmailActivitiesDeadline;
+use App\Mail\SendEmailActivityAssigned;
 use App\Repositories\ActivityHistories\ActivityHistory;
 use App\Repositories\Customers\Customer;
 use App\Repositories\Histories\UserHistory;
@@ -284,9 +284,8 @@ class Activity extends Model
         if ($company->notifyAssignmentActivity()) {
             history(UserHistory::NOTIFY,"Notificó la asignación de la actividad  $this->name",$this);
             Mail::to($this->user->email)
-                ->send(new SendEmailActivitiesDeadline($this));
+                ->send(new SendEmailActivityAssigned($this));
         }
-
 
     }
 

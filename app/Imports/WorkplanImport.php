@@ -17,11 +17,11 @@ class WorkplanImport implements ToCollection,WithValidation,WithHeadingRow
 {
 
 
-    private int $company_id;
+    private User $user;
 
-    public function __construct(int $company_id)
+    public function __construct($user)
     {
-        $this->company_id = $company_id;
+        $this->user = $user;
     }
 
     public function collection(Collection $rows)

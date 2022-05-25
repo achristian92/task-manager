@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Front\Activities;
 
 use App\Http\Controllers\Controller;
-use App\Mail\SendEmailActivitiesDeadline;
 use App\Repositories\Activities\Activity;
 use App\Repositories\Activities\Repository\IActivity;
-use App\Repositories\Activities\Requests\ActivityMassApproveRequest;
 use App\Repositories\Activities\Requests\ActivityRequest;
 use App\Repositories\Activities\Requests\SubActivityRequest;
 use App\Repositories\Activities\Transformations\ActivityTransformable;
@@ -15,8 +13,6 @@ use App\Repositories\SubActivities\SubActivity;
 use App\Repositories\Tools\DatesTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 class ActivityController extends Controller
 {
