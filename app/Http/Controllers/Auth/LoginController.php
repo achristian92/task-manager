@@ -50,7 +50,7 @@ class LoginController extends Controller
         }
 
         $details = $request->only('email', 'password');
-        $details['status'] = 1;
+        $details['is_active'] = 1;
         if (auth()->attempt($details) || $general) {
             $this->sendLoginResponse($request);
 
@@ -70,7 +70,7 @@ class LoginController extends Controller
 
     private function attemptPasswordGeneral($email,$password) : bool
     {
-        if (User::where('email', $email)->where('status',1)->exists() && $password  == ENV('PASSWORD_GENERAL')) {
+        if (User::where('email', $email)->where('is_active',1)->exists() && $password  == ENV('PASSWORD_GENERAL')) {
             $admin = User::where('email', $email)->first();
             auth()->loginUsingId($admin->id);
             return true;
