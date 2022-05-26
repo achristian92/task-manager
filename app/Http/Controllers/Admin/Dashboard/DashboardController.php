@@ -50,7 +50,7 @@ class DashboardController extends Controller
     private function totalHours(Collection $activities,string $groupby, int $qtyShow = 5): array
     {
         $group = $groupby === 'customer' ? 'custName' : 'usuName';
-        $route = $groupby === 'customer' ? 'admin.customers.show' : 'admin.users.show';
+        $route = $groupby === 'customer' ? 'admin.customers.show' : 'admin.tracks.show';
         $groupid = $groupby === 'customer' ? 'custId' : 'usuId';
         $total = $activities->groupBy($group)
             ->map(function ($activities, $custName) use ( $route , $groupid ) {
