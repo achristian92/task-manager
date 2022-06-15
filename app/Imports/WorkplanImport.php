@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
 class WorkplanImport implements ToCollection,WithValidation,WithHeadingRow
@@ -30,11 +31,11 @@ class WorkplanImport implements ToCollection,WithValidation,WithHeadingRow
                 $activity = Activity::create(
                     [
                         'start_date'    => $this->transformDate($row['fecha']),
-                        'customer_id'   => $row['id_cliente'],
+                        'customer_id'   => $this->getIdCustomerByName($row['cliente']),
                         'user_id'       => $this->user->id,
                         'name'          => $row['actividad'],
                         'time_estimate' =>  $this->transformDate($row['horas'],'H:i'),
-                        'tag_id'        => $row['id_etiqueta'],
+                        'tag_id'        => $this->getIdTagByName($row['etiqueta']),
                         'description'   => $row['descripcion'],
                         'due_date'      => $this->transformDate($row['fecha']),
                         'is_priority'   => $row['prioridad'] === 'x',
@@ -56,16 +57,34 @@ class WorkplanImport implements ToCollection,WithValidation,WithHeadingRow
     public function rules(): array
     {
         return [
-            '*.fecha'       => 'required|numeric',
-            '*.id_cliente'  => ['required',Rule::in(Customer::whereCompanyId($this->user->company_id)->get()->modelKeys())],
-            '*.actividad'   => 'required|max:255',
-            '*.horas'       => 'required|numeric',
-            '*.id_etiqueta' => ['required',Rule::in(Tag::whereCompanyId($this->user->company_id)->get()->modelKeys())],
+            '*.fecha'     => 'required|numeric',
+            '*.cliente'   => ['required',Rule::in(Customer::whereCompanyId($this->user->company_id)->pluck('name')->toArray())],
+            '*.actividad' => 'required|max:255',
+            '*.horas'     => 'required|numeric',
+            '*.etiqueta'  => ['required',Rule::in(Tag::whereCompanyId($this->user->company_id)->pluck('name')->toArray())],
         ];
     }
     public function headingRow(): int
     {
         return 7;
+    }
+
+    private function getIdCustomerByName($name): int
+    {
+        $customer = Customer::whereCompanyId($this->user->company_id)->whereName($name)->first();
+        if ( !$customer )
+            return 0;
+
+        return $customer->id;
+    }
+
+    private function getIdTagByName($name): int
+    {
+        $tag = Tag::whereCompanyId($this->user->company_id)->whereName($name)->first();
+        if ( !$tag )
+            return 0;
+
+        return $tag->id;
     }
 
     public function transformDate($value, $format = 'Y-m-d')
@@ -76,4 +95,6 @@ class WorkplanImport implements ToCollection,WithValidation,WithHeadingRow
             return Carbon::now($format)->format($value);
         }
     }
+
+
 }

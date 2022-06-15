@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers\Front\Users;
 
-use App\Exports\Activities\TemplateExport;
+use App\Exports\Activities\partials\ActivitiesSheet;
+use App\Exports\Activities\TemplatePlannedExport;
 use App\Exports\Matriz\MatrizExport;
 use App\Http\Controllers\Controller;
+use App\Imports\ActivitiesImport;
 use App\Imports\WorkplanImport;
 use App\Repositories\Activities\Activity;
 use App\Repositories\Activities\Repository\IActivity;
 use App\Repositories\Activities\Requests\ActivityDuplicateRequest;
+use App\Repositories\Customers\Customer;
 use App\Repositories\Histories\UserHistory;
+use App\Repositories\Tags\Tag;
 use App\Repositories\Tools\DatesTrait;
 use App\Repositories\Tools\UploadableTrait;
 use Auth;
@@ -29,19 +33,15 @@ class WorkPlanImportController extends Controller
         $this->activityRepo = $IActivity;
     }
 
-    public function matriz()
-    {
-        history(UserHistory::EXPORT,"Exportó plantilla matriz");
-
-        return (new MatrizExport(companyID()))->download('Matriz-Clientes-Etiquetas.xlsx');
-    }
 
     public function template()
     {
         history(UserHistory::EXPORT,"Exportó plantilla para importar plan");
 
-        return Excel::download(new TemplateExport(), 'Plantilla-Plan-Trabajo.xlsx');
+        $customers = Customer::whereCompanyId(companyID())->orderBy('name')->pluck('name')->toArray();
+        $tags = Tag::whereCompanyId(companyID())->orderBy('name')->pluck('name')->toArray();
 
+        return Excel::download(new TemplatePlannedExport($customers,$tags), 'Plantilla-Plan-Trabajo.xlsx');
     }
 
     public function import(Request $request)
@@ -62,7 +62,7 @@ class WorkPlanImportController extends Controller
         history(UserHistory::IMPORT,"Importó plan de trabajo - $url");
 
 
-        Excel::import(new WorkplanImport(Auth::user()), $request->file('file_upload'));
+        Excel::import(new ActivitiesImport(Auth::user()), $request->file('file_upload'));
 
         return response()->json([
             'msg' => 'Información cargada',
@@ -157,11 +157,11 @@ class WorkPlanImportController extends Controller
     {
         return collect([
             "fecha",
-            "id_cliente",
+            "cliente",
             "actividad",
             "horas",
             "prioridad",
-            "id_etiqueta",
+            "etiqueta",
             "descripcion",
         ]);
     }

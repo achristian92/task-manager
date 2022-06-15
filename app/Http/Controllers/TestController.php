@@ -2,26 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\Activities\DeadlineAdminMail;
-use App\Mail\Activities\DeadlineUserMail;
-use App\Mail\Activities\EvaluationMail;
-use App\Mail\Activities\NotFinishedMail;
-use App\Repositories\Activities\Activity;
+use App\Exports\Activities\partials\ActivitiesSheet;
+use App\Exports\Activities\TemplatePlannedExport;
 use App\Repositories\Activities\Repository\IActivity;
 use App\Repositories\Activities\Transformations\ActivityTrait;
-use App\Repositories\Companies\Company;
 use App\Repositories\Customers\Customer;
+use App\Repositories\Tags\Tag;
 use App\Repositories\Users\Repository\IUser;
-use App\Repositories\Users\User;
-use Carbon\Carbon;
-use Carbon\CarbonPeriod;
-use DateTime;
-use DB;
-use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
+use Excel;
 
 class TestController extends Controller
 {
@@ -38,48 +26,10 @@ class TestController extends Controller
 
     public function __invoke()
     {
-        $company = request()->input('company');
-        if (!$company)
-            dd("falta company");
+        $customers = Customer::whereCompanyId(companyID())->orderBy('name')->pluck('name')->toArray();
+        $tags = Tag::whereCompanyId(companyID())->orderBy('name')->pluck('name')->toArray();
 
-
-        DB::table('activities')->where('company_id',$company)
-            ->orderBy('created_at','desc')
-            ->chunk(500, function($activties)
-        {
-            foreach ($activties as $activity)
-            {
-                $update = DB::table('activities')
-                    ->where('id', $activity->id)
-                    ->limit(1)
-                    ->update([ 'created_by_id' => $activity->user_id]);
-            }
-        });
-
-
-        dd("terminado");
-
-//        $start = request()->startdate;
-//        $end = request()->duedate;
-//
-//        Activity::whereDate('start_date','>=',$start)
-//            ->whereDate('start_date','<=',$end)
-//            ->get()
-//            ->each(function ($activity) {
-//                $activity->total_time_real = $activity->time_real;
-//                $activity->save();
-//            });
-//        dd("$start - $end");
-    }
-
-
-    private function users()
-    {
-        $users = User::all()->map(function ($user) {
-            $new_email = Str::replace('jga.pe', 'test.com', $user->email);
-            $user->update(['email' => $new_email]);
-        });
-        dump("end");
+        return Excel::download(new TemplatePlannedExport($customers,$tags), 'Plantilla-Plan-Trabajo.xlsx');
     }
 
 

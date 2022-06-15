@@ -21,10 +21,6 @@
                     </div>
                     <br><br>
                     <div class="alert alert-secondary">
-                        Descargar matriz de clientes y etiquetas
-                        <a href="" @click="downloadMatriz">Click aqui!</a>
-                    </div>
-                    <div class="alert alert-secondary">
                         Descargar plantilla para importar plan de trabajo
                         <a href="" @click="downloadTemplate">Click aqui!</a>
                     </div>
@@ -108,12 +104,6 @@ export default {
                     }
                 });
 
-        },
-        downloadMatriz(e) {
-            e.preventDefault();
-            Vue.$toast.success("Descargando...");
-            e.preventDefault();
-            window.location =  `${this.appUrl}api/my-workplans/matriz`
         },
         downloadTemplate(e) {
             e.preventDefault();

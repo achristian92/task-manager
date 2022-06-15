@@ -28,7 +28,6 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth']], function () {
     Route::get('users/{user}/customers',UserCustomerController::class);
 
     Route::get('users/{user}/workplans',WorkplanController::class);
-    Route::get('my-workplans/matriz', [WorkPlanImportController::class,'matriz']);
     Route::get('my-workplans/template', [WorkPlanImportController::class,'template']);
     Route::post('my-workplans/import', [WorkPlanImportController::class,'import']);
     Route::get('my-workplans/mass-planned', [WorkPlanImportController::class,'massplanned']);
