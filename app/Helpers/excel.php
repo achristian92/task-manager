@@ -2,10 +2,14 @@
 
 function EventExportImageLogo($coordinates = "B2")
 {
+    $path = public_path('/img/task-manager-logo.png');
+    if(Auth::user()->company->src_logo_local)
+        $path = public_path(Auth::user()->company->src_logo_local);
+
     $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-    $drawing->setPath(public_path('/img/task-manager-logo.png'));
-    $drawing->setHeight(40);
-    $drawing->setWidth(100);
+    $drawing->setPath($path);
+    $drawing->setHeight(100);
+    $drawing->setWidth(150);
     $drawing->setCoordinates($coordinates);
 
     return $drawing;
