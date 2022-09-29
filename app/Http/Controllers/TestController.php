@@ -10,6 +10,7 @@ use App\Repositories\Companies\Company;
 use App\Repositories\Customers\Customer;
 use App\Repositories\Tags\Tag;
 use App\Repositories\Users\Repository\IUser;
+use App\Repositories\Users\User;
 use Excel;
 
 class TestController extends Controller
@@ -27,8 +28,7 @@ class TestController extends Controller
 
     public function __invoke()
     {
-        $company = Company::find(1);
-        dd($company->getSrcLogoLocal());
+        
     }
 
 
