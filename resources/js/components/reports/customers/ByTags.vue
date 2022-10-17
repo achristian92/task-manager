@@ -1,5 +1,5 @@
 <template>
-    <div class="modal fade" id="TagsModal" tabindex="-1" role="dialog" aria-labelledby="edit-event-label" aria-hidden="true">
+    <div class="modal fade" id="TagsModal" role="dialog" aria-labelledby="edit-event-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <loading :active.sync="isLoading" :is-full-page="false"></loading>

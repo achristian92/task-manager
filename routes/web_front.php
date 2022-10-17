@@ -57,6 +57,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth']], function () {
     Route::get("reports/customers/list-users-working", [ReportCustomerController::class,'user']);
     Route::get("reports/customers/monthly-working-time-history", [ReportCustomerController::class,'history']);
     Route::get("reports/customers/activities-tags", [ReportCustomerController::class,'tag']);
+    Route::get("reports/customers/activities-customer", [ReportCustomerController::class,'customer']);
 
     Route::get("reports/activities/list-activities", ActivityExportController::class);
 });

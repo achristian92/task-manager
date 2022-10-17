@@ -20,6 +20,7 @@
     <report-customers-listusers :p_customers="{{json_encode($customers)}}"></report-customers-listusers>
     <report-customers-history></report-customers-history>
     <report-customers-tag :p_customers="{{json_encode($customers)}}"></report-customers-tag>
+    <report-customers-customer :p_customers="{{json_encode($customers)}}"></report-customers-customer>
 
     <report-activities-list></report-activities-list>
 @endsection

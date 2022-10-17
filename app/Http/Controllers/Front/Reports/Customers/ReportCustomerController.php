@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Front\Reports\Customers;
 
 use App\Exports\CustomerHistoryHours;
 use App\Exports\CustomerListCounterWork;
+use App\Exports\Customers\ActivitiesByCustomerExport;
 use App\Exports\Customers\ActivitiesByTagExport;
 use App\Exports\Customers\ActivityTagExport;
 use App\Exports\Customers\HistoryHoursExport;
 use App\Exports\Customers\TotalHoursByDayExport;
 use App\Exports\Customers\UserListExport;
 use App\Http\Controllers\Controller;
+use App\Repositories\Activities\Repository\IActivity;
+use App\Repositories\Activities\Transformations\ActivityTraitReport;
 use App\Repositories\Customers\Customer;
 use App\Repositories\Customers\Repository\ICustomer;
 use App\Repositories\Histories\UserHistory;
@@ -21,13 +24,15 @@ use Illuminate\Support\Str;
 
 class ReportCustomerController extends Controller
 {
-    use UploadableDocumentsTrait, DatesTrait;
+    use UploadableDocumentsTrait, DatesTrait, ActivityTraitReport;
 
     private ICustomer $customerRepo;
+    private IActivity $activityRepo;
 
-    public function __construct(ICustomer $ICustomer)
+    public function __construct(ICustomer $ICustomer, IActivity $IActivity)
     {
         $this->customerRepo = $ICustomer;
+        $this->activityRepo = $IActivity;
     }
 
     public function day(Request $request)
@@ -135,6 +140,34 @@ class ReportCustomerController extends Controller
         $fullPath = $this->handleDocumentS3(new ActivitiesByTagExport($activities,$customer->name,$range),$filename);
 
         docHistory(UserHistory::EXPORT, "Exportó reporte por etiquetas de $customer->name",$fullPath);
+        history(UserHistory::EXPORT,"Exportó reporte planificado vc real de $customer->name - $fullPath");
+
+        return response()->json([
+            'status' => 'ok',
+            'msg'    => 'Descargando...',
+            'url'    => $fullPath
+        ],201);
+
+    }
+
+    public function customer(Request $request)
+    {
+        $request->validate([
+            'customer_id'  => 'required',
+            'yearAndMonth' => 'required|date_format:Y-m',
+        ]);
+
+        $date = $this->getDateFormats($request->yearAndMonth);
+
+        $activities = $this->customerRepo->activitiesAllReport($date['from'], $date['to'],NULL,$request->customer_id);
+
+        $customer = Customer::find($request->customer_id);
+        $filename = $customer->ruc."-actividades-por-cliente.xlsx";
+        $range = Carbon::parse($date['from'])->format('d/m/y') .' - '. Carbon::parse($date['to'])->format('d/m/y');
+
+        $fullPath = $this->handleDocumentS3(new ActivitiesByCustomerExport($activities,$customer->name,$range),$filename);
+
+        docHistory(UserHistory::EXPORT, "Exportó reporte por cliente de $customer->name",$fullPath);
         history(UserHistory::EXPORT,"Exportó reporte planificado vc real de $customer->name - $fullPath");
 
         return response()->json([

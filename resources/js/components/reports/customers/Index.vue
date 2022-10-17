@@ -36,6 +36,14 @@
                         </span>
                     </a>
                 </li>
+                <li class="list-group-item">
+                    <a href="#" data-toggle="modal" data-target="#ByCustomerModal">
+                        <span class="text-muted h5">
+                            <i class="fas fa-chevron-right mr-2"></i>
+                            Actividades por cliente <span class="text-success"></span>
+                        </span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

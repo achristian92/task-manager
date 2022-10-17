@@ -77,6 +77,7 @@ Vue.component('report-customers-totalhoursdays', require('./components/reports/c
 Vue.component('report-customers-listusers', require('./components/reports/customers/ListUsers').default);
 Vue.component('report-customers-history', require('./components/reports/customers/History').default);
 Vue.component('report-customers-tag', require('./components/reports/customers/ByTags').default);
+Vue.component('report-customers-customer', require('./components/reports/customers/ByCustomer').default);
 
 Vue.component('report-activities', require('./components/reports/activities/Index').default);
 Vue.component('report-activities-list', require('./components/reports/activities/List').default);
