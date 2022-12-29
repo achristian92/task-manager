@@ -59,7 +59,7 @@ class ActivitiesByCustomerExport  implements FromView,WithDrawings,ShouldAutoSiz
                     ->setCellValue('c7',$this->rangeDate);
                 $event->sheet->getDelegate()
                     ->setCellValue('b8','REPORTE DE ACTIVIDADES')
-                    ->mergeCells('b8:g8');
+                    ->mergeCells('b8:h8');
 
                 /* Styles */
                 $event->sheet->getDelegate()
@@ -77,10 +77,10 @@ class ActivitiesByCustomerExport  implements FromView,WithDrawings,ShouldAutoSiz
                         ]
                     );
                 $event->sheet->getDelegate()
-                    ->getStyle('b8:g8')
+                    ->getStyle('b8:h8')
                     ->applyFromArray($style['TITLE']);
                 $event->sheet->getDelegate()
-                    ->getStyle('b9:g9')
+                    ->getStyle('b9:h9')
                     ->applyFromArray($style['HEADER']);
 
                 $event->sheet->getDelegate()->getRowDimension(8)->setRowHeight(25);

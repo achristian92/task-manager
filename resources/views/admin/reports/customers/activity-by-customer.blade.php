@@ -9,6 +9,7 @@
         <th><strong>REAL</strong></th>
         <th><strong>ESTADO</strong></th>
         <th><strong>ETIQUETA</strong></th>
+        <th><strong>USUARIO</strong></th>
     </tr>
     </thead>
     <tbody>
@@ -21,6 +22,7 @@
             <td>{{$activity['realTime']}}</td>
             <td style="background-color: {{$activity['color']}};">{{$activity['statusName']}}</td>
             <td>{{$activity['tag']}}</td>
+            <td>{{$activity['counter']}}</td>
         </tr>
     @endforeach
     </tbody>

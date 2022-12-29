@@ -1,8 +1,8 @@
 {
-    "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css",
-    "/css/auth.css": "/css/auth.css",
-    "/css/dts.css": "/css/dts.css",
-    "/js/argon.js": "/js/argon.js",
-    "/js/scripts2.js": "/js/scripts2.js"
+    "/js/app.js": "/js/app.js?id=ec15a182d919b98ddf22",
+    "/css/app.css": "/css/app.css?id=752a232e140fbdc3e34a",
+    "/css/auth.css": "/css/auth.css?id=44d984c9dd02350ddafa",
+    "/css/dts.css": "/css/dts.css?id=da85f812e167cbc54eaa",
+    "/js/argon.js": "/js/argon.js?id=c5b8bac9bc73af57b4c7",
+    "/js/scripts2.js": "/js/scripts2.js?id=4fd4ef4ffaa71899da9f"
 }
