@@ -85,5 +85,6 @@ Route::group(['prefix' => 'setting', 'middleware' => ['auth'], 'as' => 'setting.
 });
 
 
+Route::webhooks('webhook-receiving-url');
 
 require __DIR__.'/web_front.php';

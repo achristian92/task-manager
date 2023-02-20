@@ -53,7 +53,7 @@
                                         <input type="date"
                                                class="form-control form-control-sm"
                                                id="start"
-                                               v-model="activity.start_date">
+                                               v-model="start_date">
                                         <div v-if="errors && errors.start_date" class="h6 text-danger">{{ errors.start_date[0] }}</div>
                                     </div>
                                 </div>
@@ -148,6 +148,7 @@ export default {
                 is_priority  : false,
                 description2 : ''
             },
+            start_date: moment().format('YYYY-MM-DD')
         }
     },
     props: ['p_customers','p_tags'],
@@ -170,6 +171,12 @@ export default {
             })
         }
         EventBus.$on('ev-activity-new',data => this.open())
+    },
+    watch: {
+        start_date: function (value) {
+            this.activity.start_date = value
+            this.activity.due_date = value
+        }
     },
     methods: {
         open() {
@@ -197,9 +204,14 @@ export default {
             then(res => {
                 this.isLoading = false
                 if (res.status === 201) {
-                    $('#ActivityNewModal').modal('hide');
-                    EventBus.$emit('activity-added', {activity: res.data.activity, msg: res.data.msg})
-                    this.resetActivity()
+                    Vue.$toast.success(res.data.msg);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000)
+
+                    // $('#ActivityNewModal').modal('hide');
+                    // EventBus.$emit('activity-added', {activity: res.data.activity, msg: res.data.msg})
+                    // this.resetActivity()
                 }
             }).
             catch(error => {

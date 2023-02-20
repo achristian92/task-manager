@@ -39,7 +39,7 @@ class ActivityController extends Controller
             $activity->notifyAssignment();
 
         return response()->json([
-            'msg' => 'Actividad creada',
+            'msg' => 'Actividad creada x2',
         ]);
     }
 
@@ -199,12 +199,15 @@ class ActivityController extends Controller
 
     public function new(ActivityRequest $request)
     {
+
         $request->merge([
             'is_planned'      => false,
             'user_id'         => \Auth::id(),
             'status'          => Activity::TYPE_COMPLETED,
             'total_time_real' => $request->input('time_real'),
-            'completed_date'  => Carbon::now()
+            'start_date'      => $request->start_date,
+            'completed_date'  => $request->start_date,
+            'due_date'        => $request->due_date,
         ]);
 
         $activity = $this->activityRepo->createActivity($request->all());
