@@ -34,7 +34,7 @@ class ReportWorkplanController extends Controller
         $activities = $this->activityRepo->workPlansByUser($user->id,$date['from'],$date['to'])
             ->transform(function ($activity) {
                 return $this->transformActivityReport($activity,true);
-            });
+            })->sortBy('startDate');
 
         $datev2 = Carbon::parse($date['from']);
         $monthName = ucfirst($datev2->monthName)."-".$datev2->year;
