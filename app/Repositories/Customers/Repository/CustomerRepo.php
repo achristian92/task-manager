@@ -53,7 +53,7 @@ class CustomerRepo extends BaseRepository implements ICustomer
         }
 
         history(UserHistory::DISABLE,"Desahilitado al cliente $customer->name",$customer);
-        return $customer->update(['status' => false]);
+        return $customer->update(['is_active' => false]);
     }
 
     public function listAllCustomers(string $orderBy = 'name', string $sortBy = 'asc', array $columns = ['*'])
