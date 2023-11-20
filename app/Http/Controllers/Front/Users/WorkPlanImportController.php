@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\Front\Users;
 
-use App\Exports\Activities\partials\ActivitiesSheet;
 use App\Exports\Activities\TemplatePlannedExport;
-use App\Exports\Matriz\MatrizExport;
 use App\Http\Controllers\Controller;
 use App\Imports\ActivitiesImport;
-use App\Imports\WorkplanImport;
 use App\Repositories\Activities\Activity;
 use App\Repositories\Activities\Repository\IActivity;
 use App\Repositories\Activities\Requests\ActivityDuplicateRequest;
@@ -16,9 +13,9 @@ use App\Repositories\Histories\UserHistory;
 use App\Repositories\Tags\Tag;
 use App\Repositories\Tools\DatesTrait;
 use App\Repositories\Tools\UploadableTrait;
-use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\HeadingRowImport;
 

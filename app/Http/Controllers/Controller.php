@@ -16,4 +16,11 @@ class Controller extends BaseController
     {
         return Auth::user();
     }
+
+    public function msgErrorJson401($msg = '')
+    {
+        return response()->json([
+            'msg' => $msg,
+        ], 401);
+    }
 }

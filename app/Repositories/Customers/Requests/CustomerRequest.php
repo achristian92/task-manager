@@ -22,25 +22,25 @@ class CustomerRequest extends FormRequest
                     return $query->where('company_id',  '=', companyID());
                 })
             ],
-            'hours'            => 'nullable|numeric',
+            'hours'            => 'nullable',
             'contact_email'    => 'nullable|email',
             'attachment_image' => ['file','image:png,jpeg,jpg','max:548'],
+            'limit_notify'     => 'required',
+            'limit_hours'      => 'required',
         ];
 
         if ( $this->method() === 'PUT' ) {
-            $rules =  [
-                'name' => ['required',
-                    'required',
-                    Rule::unique('customers','name')->where(function ($query) {
-                        return $query->where('company_id',  '=', companyID());
-                    })->ignore($this->segment(3))
-                ],
-                'ruc'  => [
-                    'required',
-                    Rule::unique('customers','ruc')->where(function ($query) {
-                        return $query->where('company_id',  '=', companyID());
-                    })->ignore($this->segment(3))
-                ],
+            $rules['name'] = ['required',
+                'required',
+                Rule::unique('customers','name')->where(function ($query) {
+                    return $query->where('company_id',  '=', companyID());
+                })->ignore($this->segment(3))
+            ];
+            $rules['ruc'] = [
+                'required',
+                Rule::unique('customers','ruc')->where(function ($query) {
+                    return $query->where('company_id',  '=', companyID());
+                })->ignore($this->segment(3))
             ];
         }
 
@@ -52,7 +52,7 @@ class CustomerRequest extends FormRequest
             'name.required'       => "El nombre del cliente es obligatorio.",
             'name.unique'         => "El nombre ya existe.",
             'contact_email.email' => "El correo de contacto es incorrecto.",
-            'hours.numeric'       => 'Horas mensuales debe ser númerico.'
+            'hours.date_format'   => 'Las horas tienen formato incorrecto(ej:01:30).'
         ];
     }
 

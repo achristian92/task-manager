@@ -28,13 +28,43 @@ class WorkplanImport implements ToCollection,WithValidation,WithHeadingRow
     public function collection(Collection $rows)
     {
         $rows->each(function ($row) {
+            $customer_id = $this->getIdCustomerByName($row['cliente']);
+            $time = $this->transformDate($row['horas'],'H:i');
+            $customer = Customer::find($customer_id);
+
+            if($customer->limitActivities()) {
+                if($customer->isValidHourLimit($time)) {
+                    $activity = Activity::create(
+                        [
+                            'start_date'    => $this->transformDate($row['fecha']),
+                            'customer_id'   => $this->getIdCustomerByName($row['cliente']),
+                            'user_id'       => $this->user->id,
+                            'name'          => $row['actividad'],
+                            'time_estimate' =>  $time,
+                            'tag_id'        => $this->getIdTagByName($row['etiqueta']),
+                            'description'   => $row['descripcion'],
+                            'due_date'      => $this->transformDate($row['fecha']),
+                            'is_priority'   => $row['prioridad'] === 'x',
+                            'status'        => Activity::TYPE_PLANNED,
+                            'created_by_id' => $this->user->id,
+                            'created_date'  => Carbon::now()
+                        ]
+                    );
+
+                    $activity->histories()->create([
+                        'user'          => $this->user->full_name,
+                        'description'   => 'Actividad creada',
+                        'registered_at' => Carbon::now()
+                    ]);
+                }
+            } else {
                 $activity = Activity::create(
                     [
                         'start_date'    => $this->transformDate($row['fecha']),
                         'customer_id'   => $this->getIdCustomerByName($row['cliente']),
                         'user_id'       => $this->user->id,
                         'name'          => $row['actividad'],
-                        'time_estimate' =>  $this->transformDate($row['horas'],'H:i'),
+                        'time_estimate' =>  $time,
                         'tag_id'        => $this->getIdTagByName($row['etiqueta']),
                         'description'   => $row['descripcion'],
                         'due_date'      => $this->transformDate($row['fecha']),
@@ -45,11 +75,14 @@ class WorkplanImport implements ToCollection,WithValidation,WithHeadingRow
                     ]
                 );
 
-                    $activity->histories()->create([
-                        'user'          => $this->user->full_name,
-                        'description'   => 'Actividad creada',
-                        'registered_at' => Carbon::now()
-                    ]);
+                $activity->histories()->create([
+                    'user'          => $this->user->full_name,
+                    'description'   => 'Actividad creada',
+                    'registered_at' => Carbon::now()
+                ]);
+            }
+
+
         });
 
     }

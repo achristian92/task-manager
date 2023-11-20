@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Activities\Activity;
 use App\Repositories\Activities\Repository\IActivity;
 use App\Repositories\Activities\Transformations\ActivityTransformable;
+use App\Repositories\Customers\Customer;
 use App\Repositories\Histories\UserHistory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -23,6 +24,14 @@ class ActivityFinishedController extends Controller
 
     public function __invoke(Request $request, int $id)
     {
+        $act = Activity::find($id);
+        $customer = Customer::find($act->customer_id);
+
+        if(!$customer->isValidHourLimit($request->input('duration',"00:00")))
+            if($customer->limitActivities())
+                return $this->msgErrorJson401("Superaste el límite de horas mensuales");
+
+
         $durationRequest = request()->input('duration',"00:00");
         $description = self::isPartialActivity() ? "Actividad avanzada con $durationRequest"
             : "Actividad completada con $durationRequest";

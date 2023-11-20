@@ -51,6 +51,11 @@ class CustomerController extends Controller
 
     public function store(CustomerRequest $request)
     {
+        if($request->filled('hours')){
+            if(count(explode(':', $request->hours)) != 2)
+                return back()->with('error',"Formato incorrecto de horas (H:m)");
+        }
+
         if ($request->hasFile('attachment_image'))
             $request->merge([
                 'src_img' => $this->handleUploadedImage($request->file('attachment_image'))
@@ -95,6 +100,11 @@ class CustomerController extends Controller
 
     public function update(CustomerRequest $request, Customer $customer)
     {
+        if($request->filled('hours')){
+            if(count(explode(':', $request->hours)) != 2)
+                return back()->with('error',"Formato incorrecto de horas (H:m)");
+        }
+
         if ($request->hasFile('attachment_image'))
             $request->merge([
                 'src_img' => $this->handleUploadedImage($request->file('attachment_image'))

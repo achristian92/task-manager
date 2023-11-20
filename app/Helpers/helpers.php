@@ -134,6 +134,16 @@ function sumTime(Collection $activities, $value) {
 
     return sprintf('%02d:%02d', $hours, $minutes);
 }
+function convertMinutes(string $time) {
+    $minutes  = 0;
+
+    list($hour, $minute) = explode(':', $time);
+
+    $minutes += $hour * 60;
+    $minutes += $minute;
+
+    return $minutes;
+}
 
 function sumArraysTime(array $times) {
     $minutes = 0; //declare minutes either it gives Notice: Undefined variable

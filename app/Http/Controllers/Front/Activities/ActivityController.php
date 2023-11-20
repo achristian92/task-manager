@@ -8,11 +8,14 @@ use App\Repositories\Activities\Repository\IActivity;
 use App\Repositories\Activities\Requests\ActivityRequest;
 use App\Repositories\Activities\Requests\SubActivityRequest;
 use App\Repositories\Activities\Transformations\ActivityTransformable;
+use App\Repositories\Customers\Customer;
 use App\Repositories\Histories\UserHistory;
 use App\Repositories\SubActivities\SubActivity;
 use App\Repositories\Tools\DatesTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ActivityController extends Controller
 {
@@ -27,6 +30,12 @@ class ActivityController extends Controller
 
     public function store(ActivityRequest $request)
     {
+        $customer = Customer::find($request->customer_id);
+
+        if(!$customer->isValidHourLimit($request->input('time_estimate')))
+            if($customer->limitActivities())
+                return $this->msgErrorJson401("Superaste el límite de horas mensuales");
+
         $activity = $this->activityRepo->createActivity($request->all());
 
         if ($request->has('previous'))
@@ -154,6 +163,13 @@ class ActivityController extends Controller
     public function sub(SubActivityRequest $request, int  $id)
     {
         $activity = Activity::find($id);
+
+        $customer = Customer::find($activity->customer_id);
+
+        if(!$customer->isValidHourLimit($request->input('duration')))
+            if($customer->limitActivities())
+                return $this->msgErrorJson401("Superaste el límite de horas mensuales");
+
         $activity->with_subactivities = true;
         $activity->save();
 
@@ -199,10 +215,15 @@ class ActivityController extends Controller
 
     public function new(ActivityRequest $request)
     {
+        $customer = Customer::find($request->customer_id);
+
+        if(!$customer->isValidHourLimit($request->input('time_real')))
+            if($customer->limitActivities())
+                return $this->msgErrorJson401("Superaste el límite de horas mensuales");
 
         $request->merge([
             'is_planned'      => false,
-            'user_id'         => \Auth::id(),
+            'user_id'         => Auth::id(),
             'status'          => Activity::TYPE_COMPLETED,
             'total_time_real' => $request->input('time_real'),
             'start_date'      => $request->start_date,
