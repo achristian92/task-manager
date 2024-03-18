@@ -7,6 +7,7 @@
         <th><strong>EMAIL</strong></th>
         <th><strong>PASSWORD</strong></th>
         <th><strong>ULTIMO LOGIN</strong></th>
+        <th><strong>ESTADO</strong></th>
     </tr>
     </thead>
     <tbody>
@@ -18,6 +19,7 @@
             <td>{{ $user['email'] }}</td>
             <td>{{ $user['raw_password'] }}</td>
             <td>{{ $user['last_login'] }}</td>
+            <td>@include('components.status',[ 'is_active' => $user->is_active ])</td>
         </tr>
     @endforeach
     </tbody>

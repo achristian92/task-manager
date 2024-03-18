@@ -39,7 +39,7 @@ class CustomerExport implements FromView,ShouldAutoSize,WithCustomStartCell,With
                 $event->sheet->setShowGridlines(false);
                 /* Styles */
                 $event->sheet->getDelegate()
-                    ->getStyle('A1:C1')
+                    ->getStyle('A1:G1')
                     ->applyFromArray($style['HEADER']);
 
                 /* Row Height */
