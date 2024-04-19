@@ -1,18 +1,20 @@
 @extends('layouts.admin.app')
 @section('content')
     <div class="row">
+        <div class="col-md-6 offset-6 text-right">
+            @include('components.datepicker',['name' => 'datepickercustomer'])
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <h3 class="mb-0 text-primary">
                                 @include('components.back',['route' => route('admin.customers.index')])
                                 {{ $customer->name }}
                             </h3>
-                        </div>
-                        <div class="col-md-6 text-right" >
-                            @include('components.datepicker',['name' => 'datepickercustomer'])
                         </div>
                     </div>
                     <div class="row">
