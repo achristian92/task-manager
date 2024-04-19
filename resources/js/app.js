@@ -82,6 +82,9 @@ Vue.component('report-customers-customer', require('./components/reports/custome
 Vue.component('report-activities', require('./components/reports/activities/Index').default);
 Vue.component('report-activities-list', require('./components/reports/activities/List').default);
 
+Vue.component('customers-file-form', require('./components/admin/customers/FileForm').default);
+
+
 
 
 

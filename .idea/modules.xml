@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$USER_HOME$/Downloads/Bordash - Admin Dashboard Template/.idea/Bordash - Admin Dashboard Template.iml" filepath="$USER_HOME$/Downloads/Bordash - Admin Dashboard Template/.idea/Bordash - Admin Dashboard Template.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/bia.iml" filepath="$PROJECT_DIR$/.idea/bia.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../brainsware/.idea/vouchers.iml" filepath="$PROJECT_DIR$/../brainsware/.idea/vouchers.iml" />
     </modules>
   </component>
 </project>

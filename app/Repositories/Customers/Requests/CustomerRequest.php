@@ -22,6 +22,7 @@ class CustomerRequest extends FormRequest
                     return $query->where('company_id',  '=', companyID());
                 })
             ],
+            'review_link'      => 'nullable',
             'hours'            => 'nullable',
             'contact_email'    => 'nullable|email',
             'attachment_image' => ['file','image:png,jpeg,jpg','max:548'],

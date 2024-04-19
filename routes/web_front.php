@@ -4,6 +4,7 @@
 use App\Http\Controllers\Front\Activities\ActivityController;
 use App\Http\Controllers\Front\Activities\ActivityFinishedController;
 use App\Http\Controllers\Front\Activities\ActivityStatusController;
+use App\Http\Controllers\Front\Customers\CustomerFileFrontController;
 use App\Http\Controllers\Front\Reports\Activities\ActivityExportController;
 use App\Http\Controllers\Front\Reports\Customers\ReportCustomerController;
 use App\Http\Controllers\Front\Reports\Users\ReportUserController;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'api/admin', 'middleware' => ['auth']], function () {
 
     Route::resource('tags',TagController::class)->except(['create','show']);
+    Route::resource('customers/{customer}/files',CustomerFileFrontController::class)->only(['store','destroy']);
 
 });
 

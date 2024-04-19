@@ -147,5 +147,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Bordash - Admin Dashboard Template" />
+    <orderEntry type="module" module-name="vouchers" />
   </component>
 </module>

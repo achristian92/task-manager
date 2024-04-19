@@ -4,13 +4,13 @@ namespace App\Repositories\Customers;
 
 use App\Repositories\Activities\Activity;
 use App\Repositories\Activities\Transformations\ActivityTransformable;
+use App\Repositories\Files\File;
 use App\Repositories\Users\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class Customer extends Model
 {
@@ -22,6 +22,10 @@ class Customer extends Model
 
     protected $dates = ['deleted_at'];
 
+    public function files(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    {
+        return $this->morphMany(File::class, 'fileable');
+    }
     public function limitActivities()
     {
         return (int) $this->limit_hours === 1 && !empty($this->hours);

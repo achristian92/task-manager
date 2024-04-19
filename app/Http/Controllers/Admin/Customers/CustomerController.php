@@ -12,6 +12,7 @@ use App\Repositories\Activities\Transformations\ActivityTransformable;
 use App\Repositories\Customers\Customer;
 use App\Repositories\Customers\Repository\ICustomer;
 use App\Repositories\Customers\Requests\CustomerRequest;
+use App\Repositories\Files\File;
 use App\Repositories\Histories\UserHistory;
 use App\Repositories\Tags\Repository\ITag;
 use App\Repositories\Tools\DatesTrait;
@@ -141,6 +142,12 @@ class CustomerController extends Controller
         return redirect()->route('admin.customers.index')->with('success', 'Información cargada');
     }
 
+    public function deleteFile(Customer $customer, File $file)
+    {
+        $file->delete();
+
+        return redirect()->route('admin.customers.show',$customer->id)->with('success', 'Documento eliminado');
+    }
 
 
 }

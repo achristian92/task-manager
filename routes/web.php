@@ -63,6 +63,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check.users'], 'as' 
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth','check.customers'], 'as' => 'admin.' ], function () {
     Route::resource('customers', CustomerController::class);
+    Route::get('customers/{customer}/files/{file}/delete', [CustomerController::class,'deleteFile'])->name('customers.files.delete');
     Route::get('customers-export', [CustomerController::class,'export'])->name('customers.export');
     Route::post('customers-import', [CustomerController::class,'import'])->name('customers.import');
 });

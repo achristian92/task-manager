@@ -30,7 +30,12 @@
                 </div>
             </div>
         </div>
-
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="form-control-label">Link reseña</label>
+                @include('components.form.text',['name' => 'review_link'])
+            </div>
+        </div>
         <h3>Contacto</h3>
         <div class="row">
             <div class="col-md-4">
