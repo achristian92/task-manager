@@ -16,6 +16,9 @@
                     @if ($customer->contact_email)
                         <i class="far fa-envelope ml-1"></i> {{ $customer->contact_email }}
                     @endif
+                    @if ($customer->review_link)
+                        <a href="{{$customer->review_link}}" title="Reseña" style="font-size: 15px" class="ml-1"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                    @endif
                 </h6>
             </div>
         </div>

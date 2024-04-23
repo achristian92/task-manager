@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Mail\Activities\NotFinishedMail;
 use App\Mail\SendCustomersLimitHours;
+use App\Repositories\Activities\Activity;
 use App\Repositories\Activities\Repository\IActivity;
 use App\Repositories\Activities\Transformations\ActivityTrait;
 use App\Repositories\Customers\Customer;
+use App\Repositories\Tags\Tag;
 use App\Repositories\Users\Repository\IUser;
 use App\Repositories\Users\User;
 use Illuminate\Support\Facades\Auth;
@@ -27,31 +29,43 @@ class TestController extends Controller
 
     public function __invoke()
     {
-        $from = now()->startOfMonth()->format('Y-m-d');
-        $to = now()->endOfMonth()->format('Y-m-d');
+        $from = request('issue_date');
+        $to = request('to');
+        if(!$from)
+            return false;
 
-        $customers = Customer::whereNotNull('hours')->where('limit_hours',true)->get()
-            ->filter(function ($customer) use ($from, $to) {
-                $totalTime = convertMinutes($customer->getTotalTime($from, $to));
-                $limitTime = convertMinutes($customer->hours);
+        $companyFront = 1;
+        $companyTo = 2;
 
-                return $totalTime > $limitTime;
-            })->transform(function ($customer) use ($from, $to) {
-                $totalTime = $customer->getTotalTime($from, $to);
+        $customers = Customer::where('company_id',$companyTo)->get();
+        $users = User::where('company_id',$companyTo)->get();
+        $tags = Tag::where('company_id',$companyTo)->get();
 
-                return [
-                    'name' => $customer->name,
-                    'limit' => $customer->hours,
-                    'time' => $totalTime,
-                    'companyId' => $customer->company_id
-                ];
+        Activity::where('company_id',$companyFront)->where('created_at','>=',$from)->where('created_at','<=',$to)->get()
+            ->each(function ($activity) use ($companyTo,$customers,$users,$tags) {
+                $userCreated = $users->random()->id;
+
+                $newActivity = $activity->replicate();
+
+                if($activity->updated_by_id)
+                    $newActivity->updated_by_id = $users->random()->id;
+
+                if($activity->approved_by_id)
+                    $newActivity->approved_by_id = $users->random()->id;
+
+                if($activity->approved_change_date_by)
+                    $newActivity->approved_change_date_by = $users->random()->id;
+
+                $newActivity->tag_id        = $tags->random()->id;
+                $newActivity->customer_id   = $customers->random()->id;
+
+                $newActivity->created_by_id = $userCreated;
+                $newActivity->user_id       = $userCreated;
+                $newActivity->company_id    = $companyTo;
+                $newActivity->save();
             });
 
-        $user = Auth::user();
-        Mail::to("alan.ruiz@brainbox.pe")
-            ->send(new SendCustomersLimitHours($user, $customers->ToArray()));
-
-        dd("sending");
+        return ("Fin");
     }
 
     public function listUsers($company_id)

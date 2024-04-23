@@ -333,9 +333,12 @@ class Activity extends Model
 
         static::saving(function ($record) {
             if (Auth::check()) {
-                $record->created_by_id = Auth::id();
-                $record->created_date  = Carbon::now();
-                $record->company_id    = companyID();
+                if(!$record->created_by_id)
+                    $record->created_by_id = Auth::id();
+                if(!$record->created_date)
+                    $record->created_date  = Carbon::now();
+                if(!$record->company_id)
+                    $record->company_id    = companyID();
             }
         });
     }
