@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\Customers\CustomerController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\History\HistoryController;
 use App\Http\Controllers\Admin\Imbox\ImboxController;
+use App\Http\Controllers\Admin\Prospectuses\ProspectusController;
 use App\Http\Controllers\Admin\Reports\ReportController;
 use App\Http\Controllers\Admin\Tags\TagController;
 use App\Http\Controllers\Admin\Tracks\TrackController;
@@ -63,6 +64,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','check.users'], 'as' 
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth','check.customers'], 'as' => 'admin.' ], function () {
     Route::resource('customers', CustomerController::class);
+    Route::resource('prospectuses', ProspectusController::class);
     Route::get('customers/{customer}/files/{file}/delete', [CustomerController::class,'deleteFile'])->name('customers.files.delete');
     Route::get('customers-export', [CustomerController::class,'export'])->name('customers.export');
     Route::post('customers-import', [CustomerController::class,'import'])->name('customers.import');

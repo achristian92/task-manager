@@ -41,7 +41,7 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group mb-2">
-                    <label class="form-control-label">Tipo de cliente</label>
+                    <label class="form-control-label">Tipo de prospecto</label>
                     <select class="form-control">
                         <option value="">Seleccionar</option>
                     </select>

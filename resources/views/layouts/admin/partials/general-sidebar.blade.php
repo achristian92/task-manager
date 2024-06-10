@@ -10,6 +10,12 @@
         <span class="nav-link-text">Clientes</span>
     </a>
 </li>
+<li class="nav-item">
+    <a class="nav-link {{isActiveRoute(2,"prospectuses")}}" href="{{route('admin.prospectuses.index')}}">
+        <img src="{{ asset('img/icons/Clientes.png') }}" class="mr-2" width="18px" alt="Customers" >
+        <span class="nav-link-text">Prospectos</span>
+    </a>
+</li>
 @if ($userCurrent->isAdmin())
     <li class="nav-item">
         <a class="nav-link {{isActiveRoute(2,"users")}}" href="{{route('admin.users.index')}}">
