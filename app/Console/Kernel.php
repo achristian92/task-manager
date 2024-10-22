@@ -37,7 +37,7 @@ class Kernel extends ConsoleKernel
             ->emailOutputOnFailure('alan.ruiz@brainbox.pe');
 
         $schedule->command('limithours:customer')
-            ->dailyAt('15:35')
+            ->dailyAt('16:05')
             ->emailOutputOnFailure('alan.ruiz@brainbox.pe');
     }
 
