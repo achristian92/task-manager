@@ -41,7 +41,7 @@ class CustomersLimitHours extends Command
         $from = now()->startOfMonth()->format('Y-m-d');
         $to = now()->endOfMonth()->format('Y-m-d');
 
-        return Customer::whereNotNull('hours')->where('limit_hours',true)->get()
+        return Customer::whereNotNull('hours')->where('limit_notity',true)->get()
             ->filter(function ($customer) use ($from, $to) {
                 $totalTime = convertMinutes($customer->getTotalTime($from, $to));
                 $limitTime = convertMinutes($customer->hours);
