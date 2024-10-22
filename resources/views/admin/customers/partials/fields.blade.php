@@ -30,32 +30,32 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group mb-2">
-                    <label class="form-control-label">Tipo de régimen</label>
-                    <select class="form-control">
-                        <option value="">Seleccionar</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group mb-2">
-                    <label class="form-control-label">Tipo de cliente</label>
-                    <select class="form-control">
-                        <option value="">Seleccionar</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group mb-2">
-                    <label class="form-control-label">Procedencia</label>
-                    <select class="form-control">
-                        <option value="">Seleccionar</option>
-                    </select>
-                </div>
-            </div>
-        </div>
+{{--        <div class="row">--}}
+{{--            <div class="col-md-4">--}}
+{{--                <div class="form-group mb-2">--}}
+{{--                    <label class="form-control-label">Tipo de régimen</label>--}}
+{{--                    <select class="form-control">--}}
+{{--                        <option value="">Seleccionar</option>--}}
+{{--                    </select>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <div class="col-md-4">--}}
+{{--                <div class="form-group mb-2">--}}
+{{--                    <label class="form-control-label">Tipo de cliente</label>--}}
+{{--                    <select class="form-control">--}}
+{{--                        <option value="">Seleccionar</option>--}}
+{{--                    </select>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <div class="col-md-4">--}}
+{{--                <div class="form-group mb-2">--}}
+{{--                    <label class="form-control-label">Procedencia</label>--}}
+{{--                    <select class="form-control">--}}
+{{--                        <option value="">Seleccionar</option>--}}
+{{--                    </select>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
         <div class="row">
             <div class="form-group col-md-12 mb-2">
                 <label class="form-control-label">Link reseña</label>
