@@ -27,6 +27,7 @@ class CustomersLimitHours extends Command
         self::queryCustomersLimitHours()
             ->groupBy('companyId')->transform(function ($data,$company_id) {
                 self::listUsers($company_id)->each(function ($user) use($data) {
+                    \Log::info("Notify limit hours:". $user->email);
                     Mail::to($user->email)
                         ->send(new SendCustomersLimitHours($user, $data->toArray()));
                 });
