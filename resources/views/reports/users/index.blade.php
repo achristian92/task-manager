@@ -8,6 +8,7 @@
         <th><strong>PASSWORD</strong></th>
         <th><strong>ULTIMO LOGIN</strong></th>
         <th><strong>ESTADO</strong></th>
+        <th><strong>CLIENTES ASIGNADOS</strong></th>
     </tr>
     </thead>
     <tbody>
@@ -20,6 +21,13 @@
             <td>{{ $user['raw_password'] }}</td>
             <td>{{ $user['last_login'] }}</td>
             <td>@include('components.status',[ 'is_active' => $user->is_active ])</td>
+            <td>
+                @if($user->can_check_all_customers)
+                    <span class="badge bg-info">Acceso a todos clientes</span>
+                @else
+                    {{ $user->customers->pluck('name') }}
+                @endif
+            </td>
         </tr>
     @endforeach
     </tbody>

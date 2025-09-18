@@ -8,6 +8,7 @@
         <th><strong>CONTACTO - NOMBRE</strong></th>
         <th><strong>CONTACTO - CORREO</strong></th>
         <th><strong>CONTACTO - TELÉF.</strong></th>
+        <th><strong>USUARIOS ASIGNADOS</strong></th>
     </tr>
     </thead>
     <tbody>
@@ -20,6 +21,15 @@
             <td>{{ $customer->contact_name }}</td>
             <td>{{ $customer->contact_email }}</td>
             <td>{{ $customer->contact_telephone }}</td>
+            <td>
+                {{
+                  $customer->users->pluck('name')
+                    ->merge(\App\Repositories\Users\User::where('can_check_all_customers', true)->where('is_active',true)->where('company_id',$customer->company_id)->pluck('name'))
+                    ->unique()
+                    ->sort()
+                    ->join(', ')
+                }}
+            </td>
         </tr>
     @endforeach
     </tbody>
