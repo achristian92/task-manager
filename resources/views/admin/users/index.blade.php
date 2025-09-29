@@ -13,6 +13,7 @@
                     <th>Usuario</th>
                     <th>Correo</th>
                     <th>Rol</th>
+                    <th>Nro Clientes</th>
                     <th>Estado</th>
                     <th></th>
                 </tr>

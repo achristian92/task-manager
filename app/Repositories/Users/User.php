@@ -89,6 +89,10 @@ class User extends Authenticatable
         return $this->hasMany(Activity::class);
     }
 
+    public function clients()
+    {
+        return $this->hasMany(Customer::class,'user_id');
+    }
     public function supervise()
     {
         return $this->belongsToMany(User::class,'supervisor_user','user_id','supervisor_id');

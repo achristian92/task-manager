@@ -12,6 +12,7 @@
         </th>
         <td>{{$user->email}}</td>
         <td>{{ $user->roles->pluck('name')->implode(' | ') }}</td>
+        <td class="text-center">{{ $user->clients->count() }}</td>
         <td>
             @include('components.status',[ 'is_active' => $user->is_active ])
         </td>
