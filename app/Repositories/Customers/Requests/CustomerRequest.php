@@ -28,6 +28,7 @@ class CustomerRequest extends FormRequest
             'attachment_image' => ['file','image:png,jpeg,jpg','max:548'],
             'limit_notify'     => 'required',
             'limit_hours'      => 'required',
+            'user_id'          => 'nullable',
         ];
 
         if ( $this->method() === 'PUT' ) {

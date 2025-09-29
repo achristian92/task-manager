@@ -32,6 +32,7 @@ trait ActivityTraitReport
             'name'          => $activity->name,
             'counter'       => $activity->user->full_name,
             'customer'      => $activity->customer->name,
+            'customerUserName' => $activity->customer->user->full_name,
             'startDate'     => Carbon::parse($dateStartOrCompleted)->format('Y-m-d'),
             'startDateFormat'=> Carbon::parse($dateStartOrCompleted)->format('d/m/y'),
             'estimatedTime' => $activity->estimatedTime(),
@@ -100,7 +101,7 @@ trait ActivityTraitReport
     /* queries */
     public function queryActivities(string $from,string $to,int $user_id = null,int $customer_id = null,bool $onlyPlanned = false)
     {
-        $activities = Activity::with('customer','user','tag','sub_activities','partials')
+        $activities = Activity::with('customer','customer.user')
             ->whereCompanyId(companyID())
             ->whereDate('start_date','>=',$from)
             ->whereDate('due_date','<=',$to)

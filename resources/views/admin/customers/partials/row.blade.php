@@ -24,6 +24,7 @@
         </div>
     </th>
     <td>{{ $customer->ruc }}</td>
+    <td>{{ $customer->user->fullname }}</td>
     <td>@include('components.status', ['is_active' => $customer->is_active])</td>
     <td class="text-right">
         @include('components.row-show', ['route' => route('admin.customers.show',$customer->id)])

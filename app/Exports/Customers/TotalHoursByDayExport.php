@@ -76,6 +76,7 @@ class TotalHoursByDayExport  implements FromView,WithDrawings,ShouldAutoSize,Wit
                 }
 
                 $current_column++;
+                $current_column++;
                 $event->sheet->getDelegate()
                     ->getStyle("c8:".$current_column."8")
                     ->applyFromArray([

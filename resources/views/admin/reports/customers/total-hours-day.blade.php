@@ -8,6 +8,7 @@
             <th>{{ (int)$i+1 }}</th>
         @endfor
         <th>TOTAL</th>
+        <th>ENCARGADO</th>
     </tr>
     </thead>
     <tbody>
@@ -19,6 +20,7 @@
                 <td>{{$value}}</td>
             @endforeach
             <td align="right"><strong>{{$customer['total']}}</strong></td>
+            <td>{{$customer['customerUserName']}}</td>
         </tr>
     @endforeach
     </tbody>

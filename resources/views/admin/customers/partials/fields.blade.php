@@ -57,9 +57,24 @@
 {{--            </div>--}}
 {{--        </div>--}}
         <div class="row">
-            <div class="form-group col-md-12 mb-2">
-                <label class="form-control-label">Link reseña</label>
-                @include('components.form.text',['name' => 'review_link'])
+            <div class="col-md-8">
+                <div class="form-group mb-2">
+                    <label class="form-control-label">Link reseña</label>
+                    @include('components.form.text',['name' => 'review_link'])
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group mb-2">
+                    <label class="form-control-label">Usuario encargado</label>
+                    <select class="form-control" name="user_id">
+                        <option value="">Seleccionar</option>
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}" {{ ( $user->id == $model->user_id || old('user_id') == $user->id) ? 'selected' : '' }}>
+                                {{ $user->full_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
         </div>
         <h3>Contacto</h3>

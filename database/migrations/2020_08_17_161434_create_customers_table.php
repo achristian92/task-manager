@@ -25,6 +25,7 @@ class CreateCustomersTable extends Migration
             $table->text('src_img')->nullable();
             $table->boolean('is_active')->default(1);
             $table->softDeletes('deleted_at', 0);
+            $table->unsignedInteger('user_id')->nullable();
             $table->foreignId('company_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

@@ -30,9 +30,11 @@ class Customer extends Model
     {
         return (int) $this->limit_hours === 1 && !empty($this->hours);
     }
-    public function users()
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class)->withDefault([
+            'full_name' => '--'
+        ]);
     }
 
     public function getSrcLogoAttribute(): string

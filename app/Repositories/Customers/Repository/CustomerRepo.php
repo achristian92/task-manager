@@ -117,6 +117,7 @@ class CustomerRepo extends BaseRepository implements ICustomer
             ->map(function ($activities, $customer) use ($rangedays) {
                 return [
                     'customer'  => $customer,
+                    'customerUserName' => $activities[0]['customerUserName'],
                     'total' => sumArraysTime($this->addTimeByDate($rangedays,$activities)),
                     'dates' => $this->addTimeByDate($rangedays,$activities)
                 ];
@@ -138,13 +139,14 @@ class CustomerRepo extends BaseRepository implements ICustomer
 
     public function reportHistory(string $from, string $to)
     {
-        return Activity::with(['customer'])
+        return Activity::with(['customer','customer.user'])
             ->whereCompanyId(companyID())
             ->whereDate('start_date','>=',$from)
             ->whereDate('due_date','<=',$to)
             ->get()
             ->transform(function ($activity) {
                 return [
+                    'customerUserName' => $activity->customer->user->full_name,
                     'customerName' => $activity->customer->name,
                     'totalRealTime' => $activity->total_time_real,
                     'startDateMonth' => Carbon::parse($activity->start_date)->format('Y-m')

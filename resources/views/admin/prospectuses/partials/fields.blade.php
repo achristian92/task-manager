@@ -57,10 +57,16 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-group col-md-12 mb-2">
-                <label class="form-control-label">Link reseña</label>
-                @include('components.form.text',['name' => 'review_link'])
+            <div class="col-md-8">
+                <div class="form-group mb-2">
+                    <label class="form-control-label">Link reseña</label>
+                    @include('components.form.text',['name' => 'review_link'])
+                </div>
             </div>
+            <div class="col-md-4">
+                <select></select>
+            </div>
+
         </div>
         <h3>Contacto</h3>
         <div class="row">

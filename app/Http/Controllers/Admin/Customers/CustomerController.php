@@ -17,6 +17,8 @@ use App\Repositories\Histories\UserHistory;
 use App\Repositories\Tags\Repository\ITag;
 use App\Repositories\Tools\DatesTrait;
 use App\Repositories\Tools\UploadableTrait;
+use App\Repositories\Users\Repository\IUser;
+use App\Repositories\Users\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Maatwebsite\Excel\Facades\Excel;
@@ -29,12 +31,14 @@ class CustomerController extends Controller
     private ICustomer $customerRepo;
     private IActivity $activityRepo;
     private ITag $tagRepo;
+    private IUser $userRepo;
 
-    public function __construct(ICustomer $ICustomer, IActivity $IActivity, ITag $ITag)
+    public function __construct(ICustomer $ICustomer, IActivity $IActivity, ITag $ITag, IUser $IUser)
     {
         $this->customerRepo = $ICustomer;
         $this->activityRepo = $IActivity;
         $this->tagRepo      = $ITag;
+        $this->userRepo      = $IUser;
     }
 
     public function index()
@@ -47,7 +51,10 @@ class CustomerController extends Controller
 
     public function create()
     {
-        return view('admin.customers.create',[ 'model' => new Customer ]);
+        return view('admin.customers.create',[
+            'model' => new Customer,
+            'users' => $this->userRepo->listUsers()
+        ]);
     }
 
     public function store(CustomerRequest $request)
@@ -71,7 +78,10 @@ class CustomerController extends Controller
 
     public function edit(Customer $customer)
     {
-        return view('admin.customers.edit',[ 'model' =>$customer ]);
+        return view('admin.customers.edit',[
+            'model' => $customer,
+            'users' => $this->userRepo->listUsers()
+        ]);
     }
 
     public function show(Customer $customer)

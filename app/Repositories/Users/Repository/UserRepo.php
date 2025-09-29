@@ -153,6 +153,7 @@ class UserRepo extends BaseRepository implements IUser
             ->transform(function ($activity) {
                 return [
                     'customer'      => $activity->customer->name,
+                    'customerUserName' => $activity->customer->user->full_name,
                     'estimatedTime' => $activity->estimatedTime(),
                     'realTime'      => $activity->total_time_real,
                 ];
@@ -162,6 +163,7 @@ class UserRepo extends BaseRepository implements IUser
                 return [
                     'date'               => $date,
                     'customer'           => $customer,
+                    'customerUserName'   => $activities[0]['customerUserName'],
                     'totalEstimatedTime' => sumTime(collect($activities),'estimatedTime'),
                     'totalRealTime'      => sumTime(collect($activities),'realTime')
                 ];

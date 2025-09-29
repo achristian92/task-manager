@@ -67,15 +67,15 @@ class ActivityExport  implements FromView,WithDrawings,ShouldAutoSize,WithCustom
                         ]
                     );
                 $event->sheet->getDelegate()
-                    ->getStyle('b8:i8')
+                    ->getStyle('b8:j8')
                     ->applyFromArray($style['TITLE']);
 
                 $event->sheet->getDelegate()
-                    ->getStyle('b9:i9')
+                    ->getStyle('b9:j9')
                     ->applyFromArray($style['HEADER']);
 
                 $event->sheet->getDelegate()
-                    ->getStyle("b10:i$endRow")
+                    ->getStyle("b10:j$endRow")
                     ->applyFromArray($style['DATA']);
 
                 $event->sheet->getDelegate()->getRowDimension(8)->setRowHeight(25);

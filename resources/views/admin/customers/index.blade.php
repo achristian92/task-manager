@@ -12,6 +12,7 @@
                 <tr>
                     <th>Cliente</th>
                     <th>RUC</th>
+                    <th>ENCARGADO</th>
                     <th>Estado</th>
                     <th></th>
                 </tr>

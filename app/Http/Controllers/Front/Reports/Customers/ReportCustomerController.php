@@ -105,6 +105,7 @@ class ReportCustomerController extends Controller
                 }
                 return [
                     'name'        => $customer,
+                    'customerUserName' => $activities->first()['customerUserName'],
                     'hoursMonths' => $hours,
                 ];
             })->values();

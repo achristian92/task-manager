@@ -71,22 +71,22 @@ class TotalHoursByCustomerExport implements FromCollection,WithHeadings,WithDraw
                         ]
                     );
                 $event->sheet->getDelegate()
-                    ->getStyle('b8:e8')
+                    ->getStyle('b8:f8')
                     ->applyFromArray($style['TITLE']);
                 $event->sheet->getDelegate()
-                    ->getStyle('b9:e9')
+                    ->getStyle('b9:f9')
                     ->applyFromArray($style['HEADER']);
                 $rowEnd = (9 + $this->data->count() );
                 $event->sheet->getDelegate()
-                    ->getStyle("b10:e$rowEnd")
+                    ->getStyle("b10:f$rowEnd")
                     ->applyFromArray($style['DATA']);
                 /**
                  *Total
                  */
                 $end = $rowEnd+1;
                 $event->sheet->getDelegate()
-                    ->setCellValue("c$end",'TOTAL:')
-                    ->getStyle("c$end")
+                    ->setCellValue("d$end",'TOTAL:')
+                    ->getStyle("d$end")
                     ->applyFromArray([
                             'font' => [
                                 'family'     => 'Calibri',
@@ -98,9 +98,9 @@ class TotalHoursByCustomerExport implements FromCollection,WithHeadings,WithDraw
                     ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
 
                 $event->sheet->getDelegate()
-                    ->setCellValue("d$end",sumArraysTime($this->data->pluck('totalEstimatedTime')->toArray()));
+                    ->setCellValue("e$end",sumArraysTime($this->data->pluck('totalEstimatedTime')->toArray()));
                 $event->sheet->getDelegate()
-                    ->setCellValue("e$end",sumArraysTime($this->data->pluck('totalRealTime')->toArray()));
+                    ->setCellValue("f$end",sumArraysTime($this->data->pluck('totalRealTime')->toArray()));
                 /* Row Height */
                 $event->sheet->getDelegate()->getRowDimension(8)->setRowHeight(25);
                 $event->sheet->getDelegate()->getRowDimension(9)->setRowHeight(25);
@@ -113,6 +113,7 @@ class TotalHoursByCustomerExport implements FromCollection,WithHeadings,WithDraw
         return [
             ' FECHA ',
             ' CLIENTES ',
+            'ENCARGADO',
             ' ESTIMADO ',
             ' REAL ',
         ];

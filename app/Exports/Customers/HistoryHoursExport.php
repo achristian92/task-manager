@@ -57,7 +57,7 @@ class HistoryHoursExport implements FromView,WithDrawings,ShouldAutoSize,WithCus
                 for($i=1; $i < count($this->rangeMonths); $i++) {
                     $current_column++; // Increment letter
                 }
-
+                $current_column++;
                 $event->sheet->getDelegate()
                     ->getStyle("c8:".$current_column."8")
                     ->applyFromArray([
